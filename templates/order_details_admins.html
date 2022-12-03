@@ -1,0 +1,115 @@
+{%extends 'AdminBase.html'%}
+{% load static %}
+{%block content%}
+
+<style>
+  
+.headding {
+  position: relative;
+  left: 3px;
+  width: 400px;
+  height: 36px;
+  border-bottom: 5px solid rgb(36, 42, 48);
+  overflow: hidden;
+}
+.headding span {
+  font-size: 23px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 31px;
+  background-color: rgb(36, 42, 48);
+  display: inline-block;
+  padding: 2px 20px;
+  overflow: hidden;
+  color: #ffffff;
+}
+.headding span:before {
+  position: absolute;
+  content: "";
+  width: 49%;
+  height: 100%;
+  background: rgb(36, 42, 48);
+  z-index: -1;
+  transform: rotate(45deg);
+}
+.buttons {
+  background-color: rgb(36, 42, 48);
+  color: white;
+  border-radius: 15px;
+}
+</style>
+
+<nav class="navbar">
+  <div class="headding">
+    <span>Orders</span>
+  </div>
+</nav>
+<!--Table Begning-->
+<section class=" mb-5 pb-5">
+  <div class="pl-1 pr-1">
+    <div class="row ">
+      <div class="col-md-12">
+        <div class="" >
+          <table class="table" >
+            <thead class="thead-primary">
+              <tr>
+                <th>Name</th>
+                <th>Product Name</th>
+                <th>Image</th>
+                <th>Amount</th>
+                <th>Address</th>
+                <th>Payment Methode</th>
+                <th>Order Status</th>
+                <th>Update</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              {% for o in orders %}
+              <tr class="alert" role="alert">
+                <td>{{o.user.first_name}} {{o.user.last_name}}</td>
+                <td><div class="name-product">{{o.product.product_name}}</div></td>
+                <td class="border-bottom-0">
+                  <div class="img" style="background-image: url({{o.product.image.url}});"></div>
+                </td>
+                <td>₹{{o.get_final_price}}</td>
+                <td>{{o.address.address}},{{o.address.district}},{{o.address.state}},{{o.address.pin_code}}</td>
+                <td>{{o.method}}</td>
+                <td>
+                  <form action="StatusUpdate/{{o.id}}" method="post">
+                    {%csrf_token%}
+                    {%if o.status == 'Confirmed'%}
+                    <select class="btn btn-info btn-sm " name="status" > 
+                      <option value="Shipped">Shipped</option> 
+                      <option value="Cancelled">Cancelled</option> </select>
+                    <td> <button type="submit" class="btn btn-warning btn-sm rounded-pill" >Update</button></td>
+                    {%elif o.status == 'Shipped' %}
+                    <select class="btn btn-info btn-sm " name="status" > 
+                      <option value="Out for delivery">Out for delivery</option> 
+                      <option value="Cancelled">Cancelled</option> </select>
+                    <td> <button type="submit" class="btn btn-warning btn-sm rounded-pill" >Update</button></td>
+                    {%elif o.status == 'Out for delivery' %}
+                    <select class="btn btn-info btn-sm " name="status" > 
+                      <option value="Delivered">Delivered</option>
+                      <option value="Cancelled">Cancelled</option> </select>
+                    <td> <button type="submit" class="btn btn-warning btn-sm rounded-pill" >Update</button></td>
+                    {%elif o.status == 'Cancelled' %}
+                      {{o.status}}
+                      
+                    {%else%}
+                    {{o.status}}
+                    
+                    {%endif%}
+                  </form>
+                </td>
+                
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Table End-->
+{%endblock%}

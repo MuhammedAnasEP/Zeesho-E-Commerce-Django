@@ -1,0 +1,220 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+
+<!-- Header Section End -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="/"><i class="fa fa-home"></i> Home</a>
+                    <span>Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container emp-profile">
+    <form method="post">
+        {%csrf_token%}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZVgaX9Pvm7oDvHESHwwEUfQagSKhVgci1zIFxd8TNug&s"
+                        alt="" />
+                    <!-- <div class="file btn btn-lg btn-primary">
+                        Change Photo
+                        <input type="file" name="file"/>
+                    </div> -->
+                </div>
+                <h5 style="padding-top: 10px;text-align: center;">
+                    {% for u in user%}
+                    <b>{{u.first_name}} {{u.last_name}}</b>
+                    {% endfor %}
+                </h5>
+                <div class="d-flex justify-content-center pt-3">
+                    <button type="button" class="profile-edit-btn" data-bs-toggle="modal" data-bs-target="#modal"
+                        style="border-radius: 50px;height:35px;">Change
+                        Password</button>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head pb-4">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                aria-controls="home" aria-selected="true">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab"
+                                aria-controls="profile" aria-selected="false">Address</a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div class="col-md-9">
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            {% for u in user %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{u.first_name}} {{u.last_name}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{u.email}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Phone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{u.phone_number}}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div>
+                                <a href="EditProfile"><button type="button" class="profile-edit-btn"
+                                        name="btnAddMore">Edit Profile</button></a>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="profile-tab">
+                            {%for a in address%}
+                            <div class="row">
+                                <div class="">
+                                    <div class="bg-white card addresses-item mb-4 border border-primary shadow">
+                                        <div class="gold-members p-4">
+                                            <div class="media">
+                                                <div class="mr-3"><i class="icofont-ui-home icofont-3x"></i></div>
+                                                <div class="media-body">
+                                                    <h6 class="mb-1 text-secondary">{{a.name}}</h6>
+                                                    <p class="text-black">
+                                                        {{a.address}},{{a.district}},{{a.state}}<br>Pin Code
+                                                        : {{a.pin_code}}
+                                                    </p>
+                                                    <p class="mb-0 text-black font-weight-bold">
+                                                        <a class="text-primary mr-3" href="AddressEdit/{{a.id}}"><i
+                                                                class="icofont-ui-edit"></i> EDIT</a>
+                                                        <a class="text-danger" data-bs-toggle="modal"
+                                                            href="#modal{{a.id}}"><i
+                                                                class="icofont-ui-delete"></i>DELETE</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="modal{{a.id}}" data-bs-backdrop="static"
+                                        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this Address ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <a href="AddressDelete/{{a.id}}"><button type="button"
+                                                            class="btn btn-primary">Confirm</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {%endfor%}
+                            <div>
+                                <a href="address"><button type="button" class="profile-edit-btn" name="btnAddMore">New
+                                        Address</button></a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="EditPassword" method="POST">
+                        {%csrf_token%}
+                        <div class="form-group">
+                            <label for="inputPasswordOld">Current Password</label>
+                            <input type="password" class="form-control" id="inputPasswordOld" name="oldpassword"
+                                required="">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPasswordNew">New Password</label>
+                            <input type="password" class="form-control" id="inputPasswordNew" name="newpassword1"
+                                required="">
+                            <span class="form-text small text-muted">
+                                The password must <em>not</em> contain spaces.
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPasswordNewVerify">Verify</label>
+                            <input type="password" class="form-control" id="inputPasswordNewVerify" name="newpassword2"
+                                required="">
+                            <span class="form-text small text-muted">
+                                To confirm, type the new password again.
+                            </span>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button></a>
+                        </div>
+                    </form>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<!-- {% if messages %}
+<div class="alert alert-danger  "  role="alert">
+    {% for message in messages %}
+    <h3  style="font-size: 15px;text-align: center;">{{message}}</h3>
+    {% endfor %}
+</div>
+{%endif%} -->
+{%endblock%}
+
+{%block js%}
+{% if messages %}
+{% for message in messages %}
+    <script>
+        swal('{{message}}');
+    </script>
+{% endfor %}
+{%endif%}
+{%endblock%}

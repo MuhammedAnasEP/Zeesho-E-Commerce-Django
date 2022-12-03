@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>OTP Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- CSS only -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{%static 'user_images/icons/favicon.ico' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_vendor/bootstrap/css/bootstrap.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css"
+		href="{% static 'user_fonts/iconic/css/material-design-iconic-font.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_vendor/animate/animate.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_vendor/css-hamburgers/hamburgers.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_vendor/animsition/css/animsition.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_vendor/select2/select2.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_vendor/daterangepicker/daterangepicker.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'user_css/main.css' %}">
+	<!--===============================================================================================-->
+
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    var jQuery_1_7_1 = $.noConflict(true);
+    </script>
+	
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
+
+
+	<style>
+		.or {
+			text-align: center;
+			padding: 5px;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+				<form action="signup_otp" class="login100-form validate-form" method="post">
+					{%csrf_token%}
+					<span class="login100-form-title p-b-25">
+						Register
+					</span>
+					<div class="validate-input m-b-23" data-validate="OTP is required">
+						
+						<div class="wrap-input100">
+							<span class="label-input100 ">OTP</span>
+							<input type="text" hidden value="{{new_phone_number}}" name="phone_number">
+							<input class="input100 mt-2" type="text" id="otp" name="otp" onkeyup="validateOTP()" placeholder="otp">
+							<span class="focus-input100" data-symbol="&#xf2be;"></span>
+						</div>
+						<small id="otp-error"></small>
+					</div>
+					<div class="mt-3 mb-4 container-login100-form-btn">
+						<button type="submit" class="btn btn-danger px-4 ">Register</button>
+					</div>
+					
+				</form>
+				<div>
+					<a href="resendOtp">
+						<button id="btnCounter" disabled>Time left: <span id="count" hidden></span> Resend OTP</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="dropDownSelect1"></div>
+	<script>
+		var otpError = document.getElementById('otp-error');
+
+		function validateOTP(){
+			var otp = document.getElementById('otp').value.trim();
+			if(otp.length == 0){
+				otpError.innerHTML = 'OTP is Required';
+				otpError.style.color = 'red'
+				return false;
+			}if (!/^[0-9]+$/.test(otp)) {
+				otpError.innerHTML = "Otp must be digits";
+				otpError.style.color='red'
+				return false;
+			  }
+			otpError.innerHTML = '';
+			return true;
+		}
+
+		jQuery_1_7_1(document).on("submit","form",function(e){
+			validateOTP()
+			if(validateOTP()){
+
+			}else{
+				e.preventDefault();
+				//swal('Invalid data! Ensure You have entered correct data');
+				return true;
+			}
+		});
+	</script>
+	<script>
+		var ctr = document.getElementById('count');
+		var button = document.getElementById('btnCounter');
+
+		var count = 6 ; 
+		var timer = null;
+
+		(function countDown(){
+			// Display counter and start counting down
+			ctr.textContent = count;
+			
+			// Run the function again every second if the count is not zero
+			if(count >0){
+		      ctr.hidden = false
+			  timer = setTimeout(countDown, 1000);
+			  count--; // decrease the timer
+			} else {
+			  // Enable the button
+			  button.removeAttribute("disabled");
+			  ctr.hidden = true
+			}
+		  }());
+
+
+	</script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>

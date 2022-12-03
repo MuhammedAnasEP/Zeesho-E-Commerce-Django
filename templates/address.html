@@ -1,0 +1,66 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<section>
+    <div class="col-md-8 mb-4 sect">
+        <div class="card mb-4">
+            <div class="card-header py-3">
+                <h5 class="mb-0 text-font text-uppercase">New address</h5>
+            </div>
+            <div class="card-body">
+                <form action="add_address" method="post" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+                    <div class="form-outline mb-4">
+                        <input type="text" name="name" id="form11Example1" class="form-control" />
+                        <label class="form-label" for="form11Example1">Name</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" name="address" id="form11Example3" class="form-control" />
+                        <label class="form-label" for="form11Example3">Address</label>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline ">
+                                <input type="text" name="state" id="form11Example4" class="form-control" />
+                                <label class="form-label" for="form11Example4">State</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline ">
+                                <input type="text" name="district" id="form11Example4" class="form-control" />
+                                <label class="form-label" for="form11Example4">District</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-outline mb-4" style="width: 48%;">
+                        <input type="text" name="pin_code" id="form11Example4" class="form-control" />
+                        <label class="form-label" for="form11Example4">Pin Code</label>
+                    </div>
+
+                    <div class="form-outline mb-4" style="width: 48%;">
+                        <input type="text" name="contact_number" id="form11Example6" class="form-control" />
+                        <label class="form-label" for="form11Example6">Phone</label>
+                    </div>
+
+                    <div class="form-outline mb-4" style="width: 48%;">
+                        <input type="text" name="additional_number" id="form11Example6" class="form-control" />
+                        <label class="form-label" for="form11Example6">Extra Number</label>
+                    </div>
+
+                    <button type="submit" class="btn button-order text-center col-md-10">Add Address</button>
+
+
+                </form>
+            </div>
+
+        </div>
+
+
+    </div>
+</section>
+{%endblock%}
