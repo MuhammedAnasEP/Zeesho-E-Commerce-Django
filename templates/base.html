@@ -365,17 +365,28 @@
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__close">+</div>
         <ul class="offcanvas__widget">
-            <li><span class="icon_search search-switch"></span></li>
-            <li><a href="wishlist"><span class="icon_heart_alt"></span>
-            <li><a href="cart"><span class="icon_bag_alt"></span></a></li>
+            <!-- <li><span class="icon_search search-switch"></span></li> -->
+            <!-- <li><a href="wishlist"><span class="icon_heart_alt"></span>
+            <li><a href="cart"><span class="icon_bag_alt"></span></a></li> -->
         </ul>
         <div class="offcanvas__logo">
             <a href=" "><img src="{% static 'img/zeesho_logo.png' %}" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
-        <div class="offcanvas__auth">
-            <a href="#">Login</a>
-            <a href="#">Register</a>
+        <div class="offcanvas__auth header__menu">
+            <ul class="dropdowns">
+                <li><a href="wishlist">Wishlist</a></li>
+                <li><a href="cart">My Cart</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/orders">My Orders</a></li>
+                <li><a href="/members/logout">Logout</a></li>
+                {% else %}
+                <li><a href="/members/login">Login</a></li>
+                <li><a href="/members/signup">Signup</a></li>
+                {% endif %}
+                
+            </ul>
         </div>
     </div>
     <!-- Offcanvas Menu End -->

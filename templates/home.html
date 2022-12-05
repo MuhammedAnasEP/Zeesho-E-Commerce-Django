@@ -79,79 +79,135 @@
                                 <li><a href="/add_to_cart_from_home/{{p.Category_id}}/{{p.id}}"><span class="icon_bag_alt"></span></a></li>
                             </ul>
                             {%if p.p_offer > 0 and p.c_offer is 0 %}
+                            {%if p_active == False%}
+                            
+                            {%else%}
+
                             <div class="p-b-18" style="position: absolute;" >
                                 <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
                                 style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
                                         {{p.p_offer}}% off
                                     </span>
                                 </div>
+                            {%endif%}
+
+                            
                             {%elif p.p_offer is 0 and p.c_offer > 0%}
+                            {%if c_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
                             <div class="p-b-18" style="position: absolute;" >
                                 <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
                                 style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
                                     {{p.c_offer}}% off
                                 </span>
                             </div>
+                            {%endif%}
+                            
+
+
+
                             {%elif p.p_offer > p.c_offer and p.p_offer > 0%}
+                            {%if p_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
                             <div class="p-b-18" style="position: absolute;" >
                                 <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
                                 style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
                                     {{p.p_offer}}% off
                                 </span>
                             </div>
+                            {%endif%}
+                            
+
+
                             {%elif p.p_offer < p.c_offer and p.c_offer > 0%}
+                            {%elif p.c_offer_price < p.p_offer_price and p.p_offer_price > 1 %}
+                            {%if c_active == False%}
+                            {%else%}
                             <div class="p-b-18" style="position: absolute;" >
                                 <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
                                 style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
                                     {{p.c_offer}}% off
                                 </span>
                             </div>
+                            {%endif%}
+                            
+
+
                             {%elif p.p_offer == p.c_offer and p.c_offer > 0 and p.p_offer > 0%}
+                            {%if p_active == False%}
+                            
+                            {%else%}
                             <div class="p-b-18" style="position: absolute;" >
                                 <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
                                 style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
                                     {{p.p_offer}}% off
                                 </span>
                             </div>
+                            {%endif%}
+                            
 
                             {%endif%}
                             
                         </div>
                         <div class="product__item__text">
                             <h6><a href="/product/{{p.id}}">{{p.product_name}}</a></h6>
-
+                            
                             {%if p.p_offer_price < 1 and p.c_offer_price < 1  %}
                             <div class="product__price">₹ {{p.price}}</div>
 
                             {%elif p.p_offer_price > 1 and p.c_offer_price is 0 %}
+                            {%if p_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
+
                             <span class="stext-105" style="color:rgb(52, 151, 52);">
                                 ₹{{p.p_offer_price}} &nbsp;
                                 <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
                             </span>
+                            {%endif%}
 
                             {%elif p.p_offer_price < 1 and p.c_offer_price > 1 %}
+                            {%if c_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
                             <span class="stext-105" style="color:rgb(52, 151, 52);">
                                 ₹{{p.c_offer_price}} &nbsp;
                                 <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
                             </span>
+                            {%endif%}
 
                             {%elif p.p_offer_price < p.c_offer_price and p.c_offer_price > 1 %}
+                            {%if p_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
                             <span class="stext-105" style="color:rgb(52, 151, 52);">
                                 ₹{{p.p_offer_price}} &nbsp;
                                 <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
                             </span>
+                            {%endif%}
+
 
                             {%elif p.c_offer_price < p.p_offer_price and p.p_offer_price > 1 %}
+                            {%if c_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
                             <span class="stext-105" style="color:rgb(52, 151, 52);">
                                 ₹{{p.c_offer_price}} &nbsp;
                                 <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
                             </span>
+                            {%endif%}
 
                             {%elif p.c_offer_price == p.p_offer_price and p.p_offer_price > 1 and p.c_offer_price > 1 %}
+                            {%if p_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
                             <span class="stext-105" style="color:rgb(52, 151, 52);">
                                 ₹{{p.p_offer_price}} &nbsp;
                                 <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
                             </span>
+                            {%endif%}
 
                             {%else%}
                             {%endif%}

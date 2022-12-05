@@ -77,19 +77,23 @@
                                 </div>
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="start">Start date</label>
-                                    <input type="date" id="start" class="form-control" value="" name="starting_date">
+                                    <input type="date" id="start" class="form-control" onchange="validateSdate()" onclick="changeStart()" value="" name="starting_date">
+                                    <span id=start_date-error></span>
                                 </div>
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="end">End date</label>
-                                    <input type="date" id="end" class="form-control" value="" name="ending_date">
+                                    <input type="date" id="end" class="form-control" onchange="validateEdate()" onclick="changeEnd()"  value="" name="ending_date">
+                                    <span id=expiry_date-error></span>
                                 </div>
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="dis">Discount Amount</label>
-                                    <input type="number" id="dis" class="form-control" value="" name="discount_amount">
+                                    <input type="number" id="dis" class="form-control" onkeyup="validatedis_amnt()" value="" name="discount_amount">
+                                    <span id=dis_amnt-error></span>
                                 </div>
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="min">Minimum Amount</label>
-                                    <input type="number" id="min" class="form-control" value="" name="minimum_amount">
+                                    <input type="number" id="min" class="form-control" onkeyup="validateMin_amnt()" value="" name="minimum_amount">
+                                    <span id=min_amnt-error></span>
                                 </div>
                             </div>
                             <div class="modal-footer d-flex justify-content-center">
@@ -169,16 +173,16 @@
 
 
                                                     <div class="md-form mb-3">
-                                                        <label data-error="wrong" data-success="right" for="start">Start
+                                                        <label data-error="wrong" data-success="right" for="starte">Start
                                                             date</label>
-                                                        <input type="date" id="start" class="form-control"
-                                                            value="{{coupon.start_date|date:'Y-m-d'}}" name="start">
+                                                        <input type="date" id="starte" class="form-control"
+                                                            value="{{coupon.start_date|date:'Y-m-d'}}" onclick="onchangeStart()" name="start" >
                                                     </div>
                                                     <div class="md-form mb-3">
-                                                        <label data-error="wrong" data-success="right" for="end">End
+                                                        <label data-error="wrong" data-success="right" for="ende">End
                                                             date</label>
-                                                        <input type="date" id="end" class="form-control"
-                                                            value="{{coupon.end_date|date:'Y-m-d'}}" name="end">
+                                                        <input type="date" id="ende" class="form-control"
+                                                            value="{{coupon.end_date|date:'Y-m-d'}}" onclick="onchangeEnd()" name="end">
                                                     </div>
                                                     <div class="md-form mb-3">
                                                         <label data-error="wrong" data-success="right"
@@ -290,4 +294,193 @@
             });
     }
 </script>
+
+
+
+
+<script>
+    function changeStart() {
+      let today = new Date()
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      today = yyyy + '-' + mm + '-' + dd;
+      start = document.getElementById('start').value
+      console.log(start)
+      dd = new Date(start).getDate() + 1;
+      mm = new Date(start).getMonth() + 1;
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      yyyy = new Date(start).getFullYear();
+      date = yyyy + '-' + mm + '-' + dd;
+      document.getElementById('start').setAttribute("min", today);
+    }
+  
+    function validateSdate(){
+      var start = document.getElementById('start').value;
+      var start_dateError = document.getElementById('start_date-error');
+      console.log(start)
+          if(start.match(/^[0-9/-]+$/))
+            {
+              start_dateError.innerHTML='Date is valid';
+              start_dateError.style.color='green'
+                return true;
+            }
+            else{
+              start_dateError.innerHTML='Date is not valid';
+              start_dateError.style.color='red'
+                return false;
+            }
+    }
+    function validateEdate(){
+      var end = document.getElementById('end').value;
+      var expiry_dateError = document.getElementById('expiry_date-error');
+          if(end.match(/^[0-9/-]+$/))
+            {
+              expiry_dateError.innerHTML='Date is valid';
+              expiry_dateError.style.color='green'
+                return true;
+            }
+            else{
+              expiry_dateError.innerHTML='Date is not valid';
+              expiry_dateError.style.color='red'
+                return false;
+            }
+    }
+  
+    function changeEnd() {
+      start = document.getElementById('start').value
+      document.getElementById('end').setAttribute("min", start);
+      return true;
+    }
+  
+    function validatedis_amnt(){
+    var dis_amntError = document.getElementById('dis_amnt-error');
+      var dis_amnt = document.getElementById('dis').value;
+      if(dis_amnt.match(/^[0-9]+$/))
+          {
+            if(dis_amnt < 10){
+              dis_amntError.innerHTML='Discount should be greater than 10';
+              dis_amntError.style.color='red'
+                return false;  
+            }
+            dis_amntError.innerHTML='Price is valid';
+            dis_amntError.style.color='green'
+              return true;
+          }
+        else{
+            dis_amntError.innerHTML ='Only Positive Numbers are to be entered';
+            dis_amntError.style.color='red'
+            return false;
+          }
+    }
+    
+    function validateMin_amnt(){
+      var min_amntError = document.getElementById('min_amnt-error');
+        var min_amnt = document.getElementById('min').value;
+        
+        if(min_amnt.length == 0){
+          min_amntError.innerHTML='Enter atleast zero Amount';
+          min_amntError.style.color='red'
+          return false;
+        }
+        else if(min_amnt.match(/^[0-9]+$/))
+            {
+              min_amntError.innerHTML='Amount is valid';
+              min_amntError.style.color='green'
+                return true;
+            }
+          else{
+              min_amntError.innerHTML ='Only Positive Numbers are to be entered';
+              min_amntError.style.color='red'
+              return false;
+            }
+      }
+      jQuery_1_7_1(document).on("submit", "form", function (e) {
+        validatedis_amnt() 
+        validateSdate()
+        validateEdate()
+        validateMin_amnt()
+    
+    
+    
+        if (validatedis_amnt() && validateSdate() && validateEdate() && validateMin_amnt()) {
+    
+        } else {
+            e.preventDefault();
+            //swal('Invalid data! Ensure You have entered correct data');
+            return true;
+        }
+        });
+  
+  </script>
+
+
+
+  <script>
+    function onchangeStart() {
+        let today = new Date()
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        start = document.getElementById('starte').value
+        console.log(start)
+        dd = new Date(start).getDate() + 1;
+        mm = new Date(start).getMonth() + 1;
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        yyyy = new Date(start).getFullYear();
+        date = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('starte').setAttribute("min", today);
+      }
+  
+    function onchangeEnd(){
+      start_date = document.getElementById('starte').value
+      document.getElementById('ende').setAttribute("min", start_date);
+    }
+  </script>
+
+
+
+
+<script>
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+      });
+    });
+  </script>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <!-- <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
 {%endblock%}

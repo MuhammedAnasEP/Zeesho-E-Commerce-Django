@@ -89,6 +89,10 @@ def new_products(request):
         except:
             return redirect(add_products)
         img = request.FILES['image']
+        img1 = request.FILES.get('image1',0)
+        img2 = request.FILES.get('image2',0)
+        img3 = request.FILES.get('image3',0)
+        img4 = request.FILES.get('image4',0)
 
         sub_cat1 = request.POST.get('sub_category')
         print(sub_cat1)
@@ -101,7 +105,7 @@ def new_products(request):
         description = request.POST['description']
 
         prod = products.objects.create(
-            product_name=product_name, price=price, Category=cat, image=img, sub_category=sub_cat, size=size, stock=stock, description=description)
+            product_name=product_name, price=price, Category=cat, image=img, image1=img1, image2=img2, image3=img3, image4=img4, sub_category=sub_cat, size=size, stock=stock, description=description)
         prod.save()
 
         # if request.FILES.get('image_files')!=0:
@@ -277,8 +281,9 @@ def edit_subcategory(request, id):
 def subcategory_update(request, id):
     if request.method == 'POST':
         cat = sub_category.objects.get(id=id)
+        print(cat)
         cat1 = request.POST.get('name')
-        print(cat1)
+        print('name : ', cat1)
         try:
             cat2 = category.objects.get(id=cat1)
         except:

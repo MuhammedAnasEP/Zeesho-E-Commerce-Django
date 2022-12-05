@@ -50,7 +50,7 @@
 </style>
 <section>
     <div class="container">
-        <nav class="navbar mt-3 mb-4 ">
+        <nav class="navbar mt-3  ">
             <div class="headding ">
                 <span>Product Offer</span>
             </div>
@@ -95,15 +95,15 @@
                                 </div>
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="start">Start date</label>
-                                    <input type="date" id="start" class="form-control" value="" name="starting_date">
+                                    <input type="date" id="start" class="form-control" value="" onclick="changeStart()" name="starting_date">
                                 </div>
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="end">End date</label>
-                                    <input type="date" id="end" class="form-control" value="" name="ending_date">
+                                    <input type="date" id="end" class="form-control" value="" onclick="changeEnd()" name="ending_date">
                                 </div>
                                 <div class="md-form  mt-3">
                                     <label data-error="wrong" data-success="right" for="offer">Offer % </label>
-                                    <input type="range" name="offer" id="range_weight" value="5" min="1" max="50"
+                                    <input type="range" name="offer" id="range_weight" value="5" min="1" max="75"
                                         oninput="range_weight_disp.value = range_weight.value">
                                     <output id="range_weight_disp"></output>
                                 </div>
@@ -173,21 +173,21 @@
                                                     </div>
 
                                                     <div class="md-form mb-3">
-                                                        <label data-error="wrong" data-success="right" for="start">Start
+                                                        <label data-error="wrong" data-success="right" for="starte">Start
                                                             date</label>
-                                                        <input type="date" id="start" class="form-control" value="{{o.start_date}}" name="starting_date">
+                                                        <input type="date" id="starte" class="form-control" value="{{o.start_date|date:'Y-m-d'}}" onclick="onchangeStart()" name="starting_date">
                                                     </div>
                                                     <div class="md-form mb-3">
-                                                        <label data-error="wrong" data-success="right" for="end">End
+                                                        <label data-error="wrong" data-success="right" for="ende">End
                                                             date</label>
-                                                        <input type="date" id="end" class="form-control"
-                                                            value="{{o.end_date}}" name="ending_date">
+                                                        <input type="date" id="ende" class="form-control" onclick="onchangeEnd()"
+                                                            value="{{o.end_date|date:'Y-m-d'}}" name="ending_date">
                                                     </div>
                                                     <div class="md-form  mt-3">
                                                         <label data-error="wrong" data-success="right" for="offer">Offer
                                                             %
                                                         </label>
-                                                        <input type="range" name="offer" id="range_weight"value="{{o.offer}}" min="1" max="50"oninput="range_weight_disp.value = range_weight.value">
+                                                        <input type="range" name="offer" id="range_weight"value="{{o.offer}}" min="1" max="75"oninput="range_weight_disp.value = range_weight.value">
                                                         <output id="range_weight_disp"></output>
                                                     </div>
 
@@ -212,8 +212,8 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <nav class="navbar mt-3 mb-4 ">
+    <div class="container mt-5">
+        <nav class="navbar mt-5 ">
             <div class="headding ">
                 <span>Category Offer</span>
             </div>
@@ -258,16 +258,16 @@
                                     </select>
                                 </div>
                                 <div class="md-form mb-3">
-                                    <label data-error="wrong" data-success="right" for="start">Start date</label>
-                                    <input type="date" id="start" class="form-control" value="" name="starting_date">
+                                    <label data-error="wrong" data-success="right" for="starting_date">Start date</label>
+                                    <input type="date" id="starting_date" class="form-control" onclick="cat_changeStart()" value="" name="starting_date">
                                 </div>
                                 <div class="md-form mb-3">
-                                    <label data-error="wrong" data-success="right" for="end">End date</label>
-                                    <input type="date" id="end" class="form-control" value="" name="ending_date">
+                                    <label data-error="wrong" data-success="right" for="ending_date">End date</label>
+                                    <input type="date" id="ending_date" onclick="cat_changeEnd()" class="form-control" value="" name="ending_date">
                                 </div>
                                 <div class="md-form  mt-3">
                                     <label data-error="wrong" data-success="right" for="offer">Offer % </label>
-                                    <input type="range" name="offer" id="range_weight" value="5" min="1" max="50"
+                                    <input type="range" name="offer" id="range_weight" value="5" min="1" max="75"
                                         oninput="range_weight_disp.value = range_weight.value">
                                     <output id="range_weight_disp"></output>
                                 </div>
@@ -286,7 +286,7 @@
                 <div class="col-md-12">
 
                     <div class="table-wrap">
-                        <table class="table" id="myTable">
+                        <table class="table" id="myTable2">
                             <thead class="thead-primary text-center">
                                 <tr>
                                     <th>Category</th>
@@ -336,22 +336,22 @@
                                                         </select>
                                                     </div>
                                                     <div class="md-form mb-3">
-                                                        <label data-error="wrong" data-success="right" for="start">Start
+                                                        <label data-error="wrong" data-success="right" for="starting_edit">Start
                                                             date</label>
-                                                        <input type="date" id="start" class="form-control" value="{{o.start_date}}" name="starting_date">
+                                                        <input type="date" id="starting_edit" class="form-control" onclick="cat_onchangeStart() " value="{{o.start_date|date:'Y-m-d'}}" name="starting_date">
                                                     </div>
                                                     <div class="md-form mb-3">
-                                                        <label data-error="wrong" data-success="right" for="end">End
+                                                        <label data-error="wrong" data-success="right" for="ending_edit">End
                                                             date</label>
-                                                        <input type="date" id="end" class="form-control"
-                                                            value="{{o.end_date}}" name="ending_date">
+                                                        <input type="date" id="ending_edit" onclick="cat_onchangeEnd() " class="form-control"
+                                                            value="{{o.end_date|date:'Y-m-d'}}" name="ending_date">
                                                     </div>
                                                     <div class="md-form  mt-3">
                                                         <label data-error="wrong" data-success="right" for="offer">Offer
                                                             %
                                                         </label>
                                                         <input type="range" name="offer" id="range_weight"
-                                                            value="{{o.offer}}" min="1" max="50"
+                                                            value="{{o.offer}}" min="1" max="75"
                                                             oninput="range_weight_disp.value = range_weight.value">
                                                         <output id="range_weight_disp"></output>
                                                     </div>
@@ -427,4 +427,192 @@
             });
     }
 </script>
+
+
+
+
+
+
+<script>
+    function changeStart() {
+      let today = new Date()
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      today = yyyy + '-' + mm + '-' + dd;
+      start = document.getElementById('start').value
+      console.log(start)
+      dd = new Date(start).getDate() + 1;
+      mm = new Date(start).getMonth() + 1;
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      yyyy = new Date(start).getFullYear();
+      date = yyyy + '-' + mm + '-' + dd;
+      document.getElementById('start').setAttribute("min", today);
+    }
+  
+    
+    function changeEnd() {
+      start = document.getElementById('start').value
+      document.getElementById('end').setAttribute("min", start);
+      return true;
+    }
+  
+    
+    function onchangeStart() {
+        let today = new Date()
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        start = document.getElementById('starte').value
+        console.log(start)
+        dd = new Date(start).getDate() + 1;
+        mm = new Date(start).getMonth() + 1;
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        yyyy = new Date(start).getFullYear();
+        date = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('starte').setAttribute("min", today);
+      }
+  
+    function onchangeEnd(){
+      start_date = document.getElementById('starte').value
+      document.getElementById('ende').setAttribute("min", start_date);
+    }
+
+
+
+    function cat_changeStart() {
+        let today = new Date()
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        start = document.getElementById('starting_date').value
+        console.log(start)
+        dd = new Date(start).getDate() + 1;
+        mm = new Date(start).getMonth() + 1;
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        yyyy = new Date(start).getFullYear();
+        date = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('starting_date').setAttribute("min", today);
+      }
+    
+      
+      function cat_changeEnd() {
+        start = document.getElementById('starting_date').value
+        document.getElementById('ending_date').setAttribute("min", start);
+        return true;
+      }
+    
+      
+      function cat_onchangeStart() {
+          let today = new Date()
+          var dd = today.getDate();
+          var mm = today.getMonth() + 1;
+          var yyyy = today.getFullYear();
+          if (dd < 10) {
+            dd = '0' + dd;
+          }
+          if (mm < 10) {
+            mm = '0' + mm;
+          }
+          today = yyyy + '-' + mm + '-' + dd;
+          start = document.getElementById('starting_edit').value
+          console.log(start)
+          dd = new Date(start).getDate() + 1;
+          mm = new Date(start).getMonth() + 1;
+          if (dd < 10) {
+            dd = '0' + dd;
+          }
+          if (mm < 10) {
+            mm = '0' + mm;
+          }
+          yyyy = new Date(start).getFullYear();
+          date = yyyy + '-' + mm + '-' + dd;
+          document.getElementById('starting_edit').setAttribute("min", today);
+        }
+    
+      function cat_onchangeEnd(){
+        start_date = document.getElementById('starting_edit').value
+        document.getElementById('ending_edit').setAttribute("min", start_date);
+      }
+  </script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      $('#myTable2').DataTable({
+        dom: 'Bfrtip',
+        
+      });
+    });
+  </script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
 {%endblock%}

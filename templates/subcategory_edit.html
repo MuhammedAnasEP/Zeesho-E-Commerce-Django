@@ -129,15 +129,14 @@
 
 	<section class="sect">
 		<div class="container mt-2 pt-2">
-
 			<form action="/admin/subcategory_update/{{subcat.id}}" method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				<!-- 2 column grid layout with text inputs for the first and last names -->
 				<div class="row mb-4">
 					<div class="col">
                         <div class="form-outline">
-							<select name="name" id="inputState" class="form-control">
-								<option value="" selected>{{subcat.Main_category}}</option>
+							<select name="name" id="inputState" class="form-control">{{subcat.Main_category}}
+								<!-- <option value="" selected>{{subcat.Main_category}}</option> -->
 								{% for cat in cat %}
 								    
 									<option value="{{cat.id}}">{{cat.category_name}}</option>

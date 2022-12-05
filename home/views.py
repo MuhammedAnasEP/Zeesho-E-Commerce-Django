@@ -1,6 +1,6 @@
 from nis import cat
 from django.shortcuts import render,redirect
-from admins.models import products,category,Coupon
+from admins.models import products,category,Coupon,ProductOffer,CategoryOffer
 from members.models import CustomUser
 from home.models import Cart,Address,Order,Wishlist
 from django.http import JsonResponse,HttpResponse
@@ -10,6 +10,7 @@ from xhtml2pdf import pisa
 from django.http import FileResponse
 from django.views.decorators.cache import never_cache
 from members.views import user_login
+from datetime import datetime,timedelta
 
 # import pagination 
 from django.core.paginator import Paginator
@@ -17,15 +18,26 @@ from django.core.paginator import Paginator
 # Create your views here.
 def home(request):
     product = products.objects.all().order_by('-id')[:12]
+    p_offer = ProductOffer.objects.all()
+    c_offer = CategoryOffer.objects.all()
     cat = category.objects.all()
-
+    now = datetime.now().date()
+    for p in p_offer:
+        print('date : ',p.end_date)
+        if p.end_date < now:
+            p.is_active = False
+            p_active = False
+    for c in c_offer:
+        print('date : ',p.end_date)
+        if c.end_date < now:
+            c.is_active = False
+            c_active = False
     # Set up Pagination
     p = Paginator(product,4)
     page = request.GET.get('page')
     venues = p.get_page(page)
     nums = "a" * venues.paginator.num_pages 
-
-    return render(request,'home.html',{'cat':cat,'products':product,'venues':venues,'nums':nums})
+    return render(request,'home.html',{'cat':cat,'products':product,'venues':venues,'nums':nums,'now':now,'c_active':c_active,'p_active':p_active})
 
 def shop(request,id):
     cat = category.objects.all()
@@ -288,6 +300,7 @@ def checkout(request):
     return redirect(user_login)
 
 def coupon_applay(request,code):
+    now = datetime.now()
     print(len(code))
     global cod 
     cod = code
@@ -308,19 +321,23 @@ def coupon_applay(request,code):
         try:
             coupon=Coupon.objects.get(code__contains=code)
             print(coupon)
+            print('end_date',coupon.end_date)
+            print('today',datetime.date.today())
         except:
             return JsonResponse({'errormessage':"Invalid Coupon Code",'total_amount':total_amount,'discount_amount':'0.0'})
         if coupon.is_active:
             if total_amount<coupon.min_amount:
                 return JsonResponse({'errormessage':"Offer only applicable for purchases above "  + str(coupon.min_amount),'total_amount':total_amount,'discount_amount':'0.0'})
+            elif (now.date() < coupon.start_date and now.date() > coupon.end_date()):
+                return JsonResponse({'errormessage': "Coupon Has Expired", 'total_amount':total_amount,'discount_amount':'0.0'})
             else:
                 total_amount = total_amount-coupon.discount_amount
                 print(total_amount,' ',coupon.discount_amount)
                 return JsonResponse({'message':"Coupon has been applied",'total_amount':total_amount,'discount_amount':coupon.discount_amount})
                 
         else:
-            return JsonResponse({'errormessage':"Offer only applicable for purchases above " ,'total_amount':total_amount,'discount_amount':'0.0'})
-            messages.error(request,"Coupon Expired")
+            return JsonResponse({'errormessage':"Coupon Expired " ,'total_amount':total_amount,'discount_amount':'0.0'})
+
 
 def placeorder(request):
     if request.method == 'POST':

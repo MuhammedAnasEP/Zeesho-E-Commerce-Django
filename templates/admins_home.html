@@ -55,25 +55,22 @@
       <div class="row">
         <div class="col-md-12">
           <div class="table-wrap">
-            <table class="table">
-              <thead class="thead-primary">
+            <table class="table" id="myTable">
+              <thead class="thead-primary text-center">
                 <tr>
                   <th >User Name</th>
                   <th >Email</th>
                   <th >First Name</th>
                   <th >Last Name</th>
-                  <th scope="col">Block</th>
-  
+                  <th >Block</th>
                 </tr>
               </thead>
-              <tbody>
-  
+              <tbody class="text-center">
                 {% for dis in details %}
                 <tr class="alert" role="alert">
                   {% if dis.is_superuser%}
                   {%elif dis.phone_number == 0%}
                   {%else%}
-
                   <td>{{dis.username}}</td>
                   <td>{{dis.email}}</td>
                   <td>{{dis.first_name}}</td>
@@ -85,7 +82,6 @@
                   <td><button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modal1{{dis.id}}">Unblock</button></a></td>
                   {%endif%}
                   {%endif%}
-  
                 </tr>
 
                 <div class="modal fade" id="modal{{dis.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -136,7 +132,4 @@
   <!--Table End-->
 
 {%endblock%}
-  
 
-
- 
