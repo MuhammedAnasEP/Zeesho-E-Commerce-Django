@@ -1,0 +1,192 @@
+{%extends 'base.html'%}
+{% load static %}
+{%block content%}
+
+
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="/"><i class="fa fa-home"></i> Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Shop Section Begin -->
+    <section class="shop spad">
+        <div class="container">
+            <div class="row">
+                <!-- <div class="col-lg-3 col-md-3">
+                    <div class="shop__sidebar">
+                        
+                    </div>
+                </div> -->
+                
+                <div class="col-lg-10 col-md-9 " style="padding-left: 200px;">
+                    
+                    <div class="row">
+                        {%for p in products%}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="{{p.image.url}}">
+                                    <!-- <div class="label new">New</div> -->
+                                    <ul class="product__hover">
+
+                                        <li><a href="{{p.image.url}}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                        <li><a ><span class="icon_heart_alt plus-wishlist" pid="{{p.id}}"></span></a></li>
+
+                                        <li><a href="/add_to_cart_from_shop/{{p.Category_id}}/{{p.id}}"><span class="icon_bag_alt"></span></a></li>
+                                    </ul>
+                                    {%if p.p_offer > 0 and p.c_offer is 0 %}
+                                    <div class="p-b-18" style="position: absolute;" >
+                                        <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                        style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                            {{p.p_offer}}% off
+                                        </span>
+                                    </div>
+                                    {%elif p.p_offer is 0 and p.c_offer > 0%}
+                                    <div class="p-b-18" style="position: absolute;" >
+                                        <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                        style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                            {{p.c_offer}}% off
+                                        </span>
+                                    </div>
+                                    {%elif p.p_offer > p.c_offer and p.p_offer > 0%}
+                                    <div class="p-b-18" style="position: absolute;" >
+                                        <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                        style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                            {{p.p_offer}}% off
+                                        </span>
+                                    </div>
+                                    {%elif p.p_offer < p.c_offer and p.c_offer > 0%}
+                                    <div class="p-b-18" style="position: absolute;" >
+                                        <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                        style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                            {{p.c_offer}}% off
+                                        </span>
+                                    </div>
+                                    {%elif p.p_offer == p.c_offer and p.c_offer > 0 and p.p_offer > 0%}
+                                    <div class="p-b-18" style="position: absolute;" >
+                                        <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                        style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                            {{p.p_offer}}% off
+                                        </span>
+                                    </div>
+
+                                    {%endif%}
+                                    
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="/product/{{p.id}}">{{p.product_name}}</a></h6>
+
+                                    {%if p.p_offer_price < 1 and p.c_offer_price < 1  %}
+                                    <div class="product__price">₹ {{p.price}}</div>
+
+                                    {%elif p.p_offer_price > 1 and p.c_offer_price is 0 %}
+                                    <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                        ₹{{p.p_offer_price}} &nbsp;
+                                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                                    </span>
+
+                                    {%elif p.p_offer_price < 1 and p.c_offer_price > 1 %}
+                                    <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                        ₹{{p.c_offer_price}} &nbsp;
+                                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                                    </span>
+
+                                    {%elif p.p_offer_price < p.c_offer_price and p.c_offer_price > 1 %}
+                                    <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                        ₹{{p.p_offer_price}} &nbsp;
+                                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                                    </span>
+
+                                    {%elif p.c_offer_price < p.p_offer_price and p.p_offer_price > 1 %}
+                                    <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                        ₹{{p.c_offer_price}} &nbsp;
+                                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                                    </span>
+
+                                    {%elif p.c_offer_price == p.p_offer_price and p.p_offer_price > 1 and p.c_offer_price > 1 %}
+                                    <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                        ₹{{p.p_offer_price}} &nbsp;
+                                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                                    </span>
+
+                                    {%else%}
+                                    {%endif%}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <!-- Shop Section End -->
+{%endblock%}
+{%block js%}
+
+    {% if messages %}
+    {%for message in messages%}
+    <script>
+        
+        swal('{{message}}')
+        
+    </script>
+    {%endfor%}
+    {%endif%}
+
+    <script>
+        $('.plus-wishlist').click(function(){
+            var id=$(this).attr("pid").toString();
+            console.log("hi")
+
+            $.ajax({
+                type:"GET",
+                url:"/AddToWishlist",
+                data:{
+                    prod_id:id
+                },
+                success:(response)=>{
+                    console.log(response.status)
+                    if(response.status){
+                        
+                        swal('Item added to wishlist').then(()=>{
+                            location.reload();
+                            })
+                    }
+                }
+            })
+        })
+        $('.minus-wishlist').click(function(){
+            var id=$(this).attr("pid").toString();
+            $.ajax({
+                type:"GET",
+                url:"/cart/removeFromWishlist",
+                data:{
+                    prod_id:id
+                },
+                success:(response)=>{
+                    console.log(response.status)
+                    if(response.status){
+                        
+                        swal('Item removed from wishlist').then(()=>{
+                        location.reload();
+                        })
+    
+                    }
+                }
+            })
+        })
+    </script>
+{%endblock%}

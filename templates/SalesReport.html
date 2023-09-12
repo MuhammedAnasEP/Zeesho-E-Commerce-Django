@@ -1,0 +1,213 @@
+{%extends 'AdminBase.html'%}
+{%load static%}
+{%block content%}
+<style>
+  .insert_button {
+
+    margin-right: 120px;
+
+
+  }
+
+  .headding {
+    position: relative;
+    left: 100px;
+    width: 400px;
+    height: 39px;
+    border-bottom: 5px solid rgb(36, 42, 48);
+    overflow: hidden;
+
+  }
+
+  .headding span {
+
+    font-size: 23px;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 31px;
+    background-color: rgb(36, 42, 48);
+    display: inline-block;
+    padding: 2px 20px;
+    overflow: hidden;
+    color: #ffffff;
+
+  }
+
+  .headding span:before {
+    position: absolute;
+    content: "";
+    width: 75%;
+    height: 100%;
+    background: rgb(36, 42, 48);
+    z-index: -1;
+    transform: rotate(45deg);
+  }
+
+
+
+  .buttons {
+    background-color: rgb(36, 42, 48);
+    color: white;
+    border-radius: 15px;
+  }
+</style>
+<nav class="navbar mb-4 mt-3">
+  <div class="headding">
+    <span>Sales Report</span>
+  </div>
+</nav>
+
+<!--Table Begning-->
+
+
+
+<section>
+  <div class="container ">
+    <div class="row">
+      <div class="col-md-12  rounded mt-2 pt-3">
+        <form action="sales_date_wise" method="POST" class="datepickers">
+          {% csrf_token %}
+          <div class="form-group d-flex justify-content-center ">
+            <div class="d-flex row">
+              <div class="col">
+                <label class="ml-3" for="start_date"> <b>Start Date</b></label>
+                <input type="date" class="form-control bg-light text-secondary" style="width: 576px;" id="start"
+                  name="start_date">
+              </div>
+              <div class="col">
+                <label class="ml-3" for="end_date"><b>End Date</b></label>
+                <input type="date" class="form-control bg-light text-secondary " style="width: 577px;" id="end"
+                  name="end_date">
+              </div>
+              <div class="col mt-5">
+                <button type="submit" class="btn btn-secondary  buttons">F I L T E R</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row pb-5">
+      <div class="col-12 mt-3">
+        <form action="sales_year_wise" method="POST" class="datepickers">
+          {% csrf_token %}
+
+          <div class="form-group  d-flex justify-content-center">
+            <div class="d-flex row ">
+              <div class="col">
+                <label>
+                  <p class="text-dark ml-3"> <b>Select Year</b> </p>
+                </label>
+                <select name="year" class="form-control bg-light text-secondary " id="months" style="width: 576px;">
+                  <option value="Select">Select</option>
+                  <option class="text-dark" value="2021">2021</option>
+                  <option class="text-dark" value="2022">2022</option>
+                  <option class="text-dark" value="2023">2023</option>
+                  <option class="text-dark" value="2024">2024</option>
+                  <option class="text-dark" value="2024">2025</option>
+                </select>
+
+              </div>
+              <div class=" col">
+                <label>
+                  <p class="text_dark ml-3"><b>Select Month</b></p>
+                </label>
+                <select name="month" class="form-control bg-light text-secondary" id="months" style="width: 577px;">
+                  <option value="all">All</option>
+                  <option class="text-dark" value="01">January</option>
+                  <option class="text-dark" value="02">February</option>
+                  <option class="text-dark" value="03">March</option>
+                  <option class="text-dark" value="04">April</option>
+                  <option class="text-dark" value="05">May</option>
+                  <option class="text-dark" value="06">June</option>
+                  <option class="text-dark" value="07">July</option>
+                  <option class="text-dark" value="08">August</option>
+                  <option class="text-dark" value="09">September</option>
+                  <option class="text-dark" value="10">October</option>
+                  <option class="text-dark" value="11">November</option>
+                  <option class="text-dark" value="12">December</option>
+                </select>
+              </div>
+              <div class=" col mt-5 pt-2">
+                <button type="submit" class="btn btn-secondary  buttons ">F I L T E R</button>
+              </div>
+
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-wrap">
+          <table class="table" id="myTable">
+            <thead class="thead-primary text-center">
+              <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Customer</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+                <th>Payment Method</th>
+                <th>Order Status</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              {%for o in orders%}
+              <tr class="alert" role="alert">
+                <td>{{o.id}}</td>
+                <td>{{o.ordered_date}}</td>
+                <td>{{o.user.first_name}} {{o.order.user.last_name}}</td>
+                <td>{{o.quantity}}</td>
+                <td>₹ {{o.get_final_price}}</td>
+                <td>{{o.method}}</td>
+                <td>{{o.status}}</td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{%endblock%}
+{%block js%}
+
+{%if messages%}
+{%for m in messages%}
+<script>
+  swal('{{m}}', {
+    buttons: false,
+    timer: 2000,
+  })
+</script>
+{%endfor%}
+{%endif%}
+
+
+<script>
+  $(document).ready(function () {
+    $('#myTable').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+    });
+  });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+
+{%endblock%}

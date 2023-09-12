@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Breadcrumb Begin -->
+
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="/"><i class="fa fa-home"></i> Home</a>
+                    <span>Shopping cart</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Shop Cart Section Begin -->
+{% if message %}
+<div style="height: 50vh;" class="d-flex justify-content-center align-items-center ">
+    <h4>{{message}}</h4>
+</div>
+{% else %}
+<section class="shop-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for o in orders %}
+                            <tr>
+                                <td class="cart__product__item">
+                                    <!-- <img src="img/shop-cart/cp-1.jpg" alt=""> -->
+                                    <div class="cart__product__item__title">
+                                        <h6>{{o.product.product_name}}</h6>
+                                    </div>
+                                </td>
+                                <!-- <td class="cart__price">₹ {{o.product.price}}</td> -->
+                                <td>
+                                {%if o.product.p_offer_price < 1 and o.product.c_offer_price < 1  %}
+                                <div class="cart__price">₹ {{o.product.price}}</div>
+
+                                {%elif o.product.p_offer_price > 1 and o.product.c_offer_price < 1 %}
+                                <span class="stext-105 cart__price" >₹ {{o.product.p_offer_price}}</span>
+
+                                {%elif o.product.p_offer_price < 1 and o.product.c_offer_price > 1 %}
+                                <span class="stext-105 cart__price">₹ {{o.product.c_offer_price}}</span>
+
+                                {%elif o.product.p_offer_price < o.product.c_offer_price and o.product.c_offer_price > 1 %}
+                                <span class="stext-105 cart__price"></span>₹ {{o.product.p_offer_price}}
+                                </span>
+
+                                {%elif o.product.c_offer_price < o.product.p_offer_price and o.product.p_offer_price > 1 %}
+                                <span class="stext-105 cart__price">₹ {{o.product.c_offer_price}}</span>
+
+                                {%elif o.product.c_offer_price == o.product.p_offer_price and o.product.p_offer_price > 1 and o.product.c_offer_price > 1 %}
+                                <span class="stext-105 cart__price">₹ {{o.product.p_offer_price}}</span>
+
+                                {%else%}
+                                {%endif%}
+                                </td>
+                                <td>
+                                    {%if o.quantity == 1%}
+                                    <button onclick="minus('{{o.id}}','{{o.quantity}}','{{o.get_final_price}}')" class="" id="myBtn{{o.id}}" style="border:none;background-color: Transparent;padding : 10px;" disabled><b>-</b></button>
+                                    {%else%}
+                                    <button onclick="minus('{{o.id}}','{{o.quantity}}','{{o.get_final_price}}')" class="" id="myBtn{{o.id}}" style="border:none;background-color: Transparent;padding : 10px;"><b>-</b></button>
+                                    {%endif%}
+                                    <span id="{{o.id}}" class="" style="padding : 10px;font-weight: bold;">{{o.quantity}}</span>
+                                    <button onclick="plus('{{o.id}}','{{o.quantity}}','{{o.get_final_price}}')"style="border:none;background-color: Transparent;outline:none; padding : 10px;"><b>+</b></button>
+                                </td>
+                                <td class="cart__total"><span>₹&ensp;</span><span id="{{o.get_final_price}}" class="mb-0 ">{{o.get_final_price}}</span></td>
+                                <td class="cart__close">
+                                    <a data-bs-toggle="modal" data-bs-target="#modal{{o.id}}">
+                                        <span class="icon_close"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <div class="modal fade" id="modal{{o.id}}" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete the Order ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <a href="remove_item/{{o.id}}"><button type="button"
+                                                    class="btn btn-primary">Confirm</button></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn">
+                    <a href="/">Continue Shopping</a>
+                </div>
+            </div>
+            <!-- <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn update__btn">
+                    <a href="#"><span class="icon_loading"></span> Update cart</a>
+                </div>
+            </div> -->
+        
+            <div class="col-lg-4 offset-lg-2">
+                <div class="cart__total__procced">
+                    <h6>Summary</h6>
+                    <ul>
+                        <li>Items <span>{{count}}</span></li>
+                        <li>Shipping <span>Free</span></li>
+                    </ul>
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Total <span>₹&ensp;<span id='total'>{{total_amount}}</span></span></li>
+                    </ul>
+                    <a href="checkout" class="primary-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{%endif%}
+{%endblock%}
+
+{%block js%}
+<!-- Shop Cart Section End -->
+<script>
+    function minus(orderid, qty, item_tot_price) {
+        $.ajax({
+            type: "GET",
+            url: "quantity_minus/" + orderid,
+            success: function (response) {
+                if (response.qty == 1) {
+                    //$.ajax({
+                    //    type: "GET",
+                    //    url: "remove_item/" + orderid,
+                    //    success: function () {
+                    //        console.log("hi")
+                    //        swal("Item removed").then(() => {
+                    //            location.reload()
+                    //        })
+                    //    }
+                    //});
+                    document.getElementById("myBtn" + orderid).disabled = true;
+                    document.getElementById(orderid).innerHTML = response.qty;
+                    document.getElementById(item_tot_price).innerHTML = response.updated;
+                    document.getElementById('total').innerHTML = response.total_amount;
+                    item_tot_price
+                    
+                    
+                }
+                
+                else {
+                    document.getElementById(orderid).innerHTML = response.qty;
+                    document.getElementById(item_tot_price).innerHTML = response.updated;
+                    document.getElementById('total').innerHTML = response.total_amount;
+                    item_tot_price
+                }
+            }
+        });
+    }
+
+    function plus(orderid, qty, item_tot_price) {
+        $.ajax({
+            type: "GET",
+            url: "quantity_plus/" + orderid,
+            success: function (response) {
+                console.log(response)
+                if(response.qty > 1){
+                
+                document.getElementById(orderid).innerHTML = response.qty;
+                document.getElementById(item_tot_price).innerHTML = response.updated;
+                document.getElementById('total').innerHTML = response.total_amount;}
+                document.getElementById("myBtn" + orderid).disabled = false;
+            }
+        })
+    }
+</script>
+{%endblock%}

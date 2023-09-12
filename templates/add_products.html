@@ -1,0 +1,419 @@
+{%extends 'AdminBase.html'%}
+{% load static %}
+{%block content%}
+<style>
+	.headding {
+
+		position: relative;
+		width: 400px;
+		height: 36px;
+		border-bottom: 5px solid rgb(36, 42, 48);
+		overflow: hidden;
+
+	}
+
+	.headding span {
+		font-size: 23px;
+		font-family: Arial, Helvetica, sans-serif;
+		line-height: 31px;
+		background-color: rgb(36, 42, 48);
+		display: inline-block;
+		padding: 2px 20px;
+		overflow: hidden;
+		color: #ffffff;
+	}
+
+	.headding span:before {
+		position: absolute;
+		content: "";
+		width: 83%;
+		height: 100%;
+		background: rgb(36, 42, 48);
+		z-index: -1;
+		transform: rotate(45deg);
+	}
+
+	.sect {
+		width: fit-content;
+		
+		border: 1px solid rgb(36, 42, 48);
+		border-radius: 5px;
+		margin-top: 20px;
+		margin-bottom: 50px;
+		background-color: #fafafa;
+
+	}
+
+	.textarea--style-6 {
+		background: white;
+		line-height: 30px;
+		border: 1px solid #cccccc;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		color: #666;
+		font-size: 15px;
+		-webkit-transition: all 0.4s ease;
+		-o-transition: all 0.4s ease;
+		-moz-transition: all 0.4s ease;
+		transition: all 0.4s ease;
+		padding: 0 20px;
+	}
+
+	.input-group {
+		position: relative;
+		margin: 0;
+	}
+</style>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.css"
+	integrity="sha512-+VDbDxc9zesADd49pfvz7CgsOl2xREI/7gnzcdyA9XjuTxLXrdpuz21VVIqc5HPfZji2CypSbxx1lgD7BgBK5g=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<nav class="navbar ">
+	<div class="headding">
+		<span>Add Products</span>
+	</div>
+</nav>
+
+
+
+<section class="sect d-flex justify-content-center">
+	<div class="container mt-2 p-5">
+
+		<form action="new_products" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<div class="row mb-4">
+				<div class="col">
+					<div class="form-outline " style="width: 400px;">
+						<label class="form-label" for="form3Example1">Product Name</label>
+						<input type="text" name="name" id="form3Example1" class="form-control" />
+
+					</div>
+
+				</div>
+				<div class="col ">
+					<div class="form-outline mb-4" style="width: 200px;">
+						<label class="form-label" for="form3Example4">Price</label>
+						<input type="text" name="price" id="form3Example4" class="form-control" />
+
+					</div>
+
+				</div>
+
+
+			</div>
+			<div class="row mb-4">
+				<div class="col">
+					<div class="form-outline mb-4" style="width: 400px;">
+						<label class="form-label" for="form3Example3">Category</label>
+						<select name="category" id="inputState" class="form-control">
+							<option value="" selected>Choose</option>
+							{% for cat in cat %}
+
+							<option value="{{cat.id}}">{{cat.category_name}}</option>
+							{%endfor%}
+						</select>
+					</div>
+
+				</div>
+				<div class="col">
+					<div class="form-outline mb-4" style="width: 200px;">
+						<label class="form-label" for="form3Example4">Sub Category</label>
+						<select name="sub_category" id="inputState" class="form-control">
+							<option value="" selected>Choose</option>
+							{% for sub_cat in sub_cat %}
+
+							<option value="{{sub_cat.id}}">{{sub_cat.name}}</option>
+							{%endfor%}
+						</select>
+
+					</div>
+
+
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col">
+					<div class="form-outline mb-4" style="width: 300px;">
+						<label class="form-label" for="form3Example3">Stock</label>
+
+						<input type="number" name="stock" id="form3Example3" class="form-control" />
+					</div>
+
+				</div>
+				<div class="col ">
+					<div class="form-group mb-4" style="width: 300px;">
+						<label class="form-label" for="form3Example4">Size</label>
+						<select name="size" id="inputState" class="form-control">
+							<option selected>S</option>
+							<option>M</option>
+							<option value="">L</option>
+							<option value="">XL</option>
+							<option value="">XXL</option>
+						</select>
+
+					</div>
+
+
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col">
+
+					<div class="form-outline mb-4 ">
+						<label class="form-label" for="form3Example97">Image</label>
+						<input type="file" id="myFile1" name="image" class="form-control form-control-lg" />
+
+
+					</div>
+					<div class="form-outline mb-4 ">
+						<label class="form-label" for="form3Example97">Image 1</label>
+						<input type="file" id="myFile2" name="image1" class="form-control form-control-lg" />
+
+
+					</div>
+					<div class="form-outline mb-4">
+						<label class="form-label" for="form3Example97">Image 2</label>
+						<input type="file" id="myFile3" name="image2" class="form-control form-control-lg" />
+
+
+					</div>
+					<div class="form-outline mb-4 ">
+						<label class="form-label" for="form3Example97">Image 3</label>
+						<input type="file" id="myFile4" name="image3" class="form-control form-control-lg" />
+
+
+					</div>
+					<div class="form-outline mb-4 ">
+						<label class="form-label" for="form3Example97">Image 4</label>
+						<input type="file" id="myFile5" name="image4" class="form-control form-control-lg" />
+
+
+					</div>
+
+
+					<!-- <div class="form-outline " >
+							<label class="form-label" for="form3Example97">Additional Image</label>
+							<input type="file" id="form3Example97" name="image_files" class="form-control form-control-lg" />
+							
+						</div> -->
+
+				</div>
+				<div class="col">
+					<div id="crop">
+						<div class="vald-info" id="info"></div>
+						<h5 class="error_form text-danger" id="image1_error_message"></h5>
+						<div style="display: center">
+							<div id="image-box1" class="image-container clr" style="height: 100%; width: 100%">
+							</div>
+							<button type="button" class="btn btneds bg-success" id="crop-btn1"
+								style=" margin-top: 10px; display: none; width: 50%;">crop</button>
+						</div>
+					</div>
+					<div class="col">
+						<div id="crop">
+							<div class="vald-info" id="info"></div>
+							<h5 class="error_form text-danger" id="image1_error_message"></h5>
+							<div style="display: center">
+								<div id="image-box2" class="image-container clr" style="height: 100%; width: 100%">
+								</div>
+								<button type="button" class="btn btneds bg-success" id="crop-btn2"
+									style=" margin-top: 10px; display: none; width: 50%;">crop</button>
+							</div>
+						</div>
+						<div id="crop">
+							<div class="vald-info" id="info"></div>
+							<h5 class="error_form text-danger" id="image1_error_message"></h5>
+							<div style="display: center">
+								<div id="image-box3" class="image-container clr" style="height: 100%; width: 100%">
+								</div>
+								<button type="button" class="btn btneds bg-success" id="crop-btn3"
+									style=" margin-top: 10px; display: none; width: 50%;">crop</button>
+							</div>
+						</div>
+
+						<div id="crop">
+							<div class="vald-info" id="info"></div>
+							<h5 class="error_form text-danger" id="image1_error_message"></h5>
+							<div style="display: center">
+								<div id="image-box4" class="image-container clr" style="height: 100%; width: 100%">
+								</div>
+								<button type="button" class="btn btneds bg-success" id="crop-btn4"
+									style=" margin-top: 10px; display: none; width: 50%;">crop</button>
+							</div>
+						</div>
+
+						<div id="crop">
+							<div class="vald-info" id="info"></div>
+							<h5 class="error_form text-danger" id="image1_error_message"></h5>
+							<div style="display: center">
+								<div id="image-box5" class="image-container clr" style="height: 100%; width: 100%">
+								</div>
+								<button type="button" class="btn btneds bg-success" id="crop-btn5"
+									style=" margin-top: 10px; display: none; width: 50%;">crop</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row mb-4">
+					<div class="col">
+						<label class="form-label" for="form3Example4">Discription</label>
+
+						<div class="value">
+							<div class="input-group">
+								<textarea class="textarea--style-6" name="description"
+									placeholder="Description"></textarea>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-success btn-block mb-4">Add Product</button>
+		</form>
+	</div>
+</section>
+{%endblock%}
+
+{%block js%}
+<script>
+	const imagebox1 = document.getElementById("image-box1");
+
+	const crop_btn1 = document.getElementById("crop-btn1");
+
+	const input1 = document.getElementById("myFile1");
+
+
+	// When user uploads the image this event will get triggered
+	input1.addEventListener("change", () => {
+		// Getting image file object from the input variable
+		const img_data1 = input1.files[0];
+		// createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+		// The new object URL represents the specified File object or Blob object.
+		const url1 = URL.createObjectURL(img_data1);
+		// Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+		imagebox1.innerHTML = `<img src="${url1}" id="image1" style="width:100%;">`;
+		// Storing that cropping view image in a variable
+		const image1 = document.getElementById("image1");
+		// Displaying the image box
+		document.getElementById("image-box1").style.display = "block";
+		// Displaying the Crop buttton
+		document.getElementById("crop-btn1").style.display = "block";
+		// Hiding the Post button
+		document.getElementById("myFile1").style.display = "block";
+		const cropper1 = new Cropper(image1, {
+			autoCropArea: 1,
+			viewMode: 1,
+			scalable: false,
+			zoomable: false,
+			movable: false,
+			minCropBoxWidth: 50,
+			minCropBoxHeight: 50,
+		});
+		// When crop button is clicked this event will get triggered
+		crop_btn1.addEventListener("click", () => {
+			// This method coverts the selected cropped image on the cropper canvas into a blob object
+			cropper1.getCroppedCanvas().toBlob((blob) => {
+				// Gets the original image data
+				let fileInputElement1 = document.getElementById("myFile1");
+				// Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+				let file1 = new File([blob], img_data1.name, {
+					type: "image/*",
+					lastModified: new Date().getTime(),
+				});
+				// Create a new container
+				let container1 = new DataTransfer();
+				// Add the cropped image file to the container
+				container1.items.add(file1);
+				// Replace the original image file with the new cropped image file
+				fileInputElement1.files = container1.files;
+				document.getElementById("myFile1").src = URL.createObjectURL(
+					fileInputElement1.files[0]
+				);
+				// Hide the cropper box
+				document.getElementById("image-box1").style.display = "none";
+				// Hide the crop button
+				document.getElementById("crop-btn1").style.display = "none";
+
+			});
+		});
+	});
+
+
+
+
+
+</script>
+<script>
+	const imagebox2 = document.getElementById("image-box2");
+	const crop_btn2 = document.getElementById("crop-btn2");
+	const input2 = document.getElementById("myFile2");
+
+
+	// When user uploads the image this event will get triggered
+	input2.addEventListener("change", () => {
+		// Getting image file object from the input variable
+		const img_data1 = input2.files[0];
+		// createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+		// The new object URL represents the specified File object or Blob object.
+		const url1 = URL.createObjectURL(img_data1);
+		// Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+		imagebox2.innerHTML = `<img src="${url1}" id="imageb" style="width:100%;">`;
+		// Storing that cropping view image in a variable
+		const image1 = document.getElementById("imageb");
+		// Displaying the image box
+		document.getElementById("image-box2").style.display = "block";
+		// Displaying the Crop buttton
+		document.getElementById("crop-btn2").style.display = "block";
+		// Hiding the Post button
+		document.getElementById("myFile2").style.display = "block";
+		const cropper1 = new Cropper(image1, {
+			autoCropArea: 1,
+			viewMode: 1,
+			scalable: false,
+			zoomable: false,
+			movable: false,
+			minCropBoxWidth: 50,
+			minCropBoxHeight: 50,
+		});
+		// When crop button is clicked this event will get triggered
+		crop_btn2.addEventListener("click", () => {
+			// This method coverts the selected cropped image on the cropper canvas into a blob object
+			cropper1.getCroppedCanvas().toBlob((blob) => {
+				// Gets the original image data
+				let fileInputElement1 = document.getElementById("myFile2");
+				// Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+				let file1 = new File([blob], img_data1.name, {
+					type: "image/*",
+					lastModified: new Date().getTime(),
+				});
+				// Create a new container
+				let container1 = new DataTransfer();
+				// Add the cropped image file to the container
+				container1.items.add(file1);
+				// Replace the original image file with the new cropped image file
+				fileInputElement1.files = container1.files;
+				document.getElementById("myFile2").src = URL.createObjectURL(
+					fileInputElement1.files[0]
+				);
+				// Hide the cropper box
+				document.getElementById("image-box2").style.display = "none";
+				// Hide the crop button
+				document.getElementById("crop-btn2").style.display = "none";
+
+			});
+		});
+	});
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.js"
+	integrity="sha512-ZK6m9vADamSl5fxBPtXw6ho6A4TuX89HUbcfvxa2v2NYNT/7l8yFGJ3JlXyMN4hlNbz0il4k6DvqbIW5CCwqkw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{%endblock%}

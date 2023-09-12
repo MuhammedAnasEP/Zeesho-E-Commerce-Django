@@ -1,0 +1,369 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Signup</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{%static 'user_images/icons/favicon.ico' %}">
+	<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'user_vendor/bootstrap/css/bootstrap.min.css' %}"> -->
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css"
+		href="{% static 'user_fonts/iconic/css/material-design-iconic-font.min.css' %}">
+	<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'user_vendor/animate/animate.css' %}"> -->
+	<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'user_vendor/css-hamburgers/hamburgers.min.css' %}"> -->
+	<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'user_vendor/animsition/css/animsition.min.css' %}"> -->
+	<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'user_vendor/select2/select2.min.css' %}"> -->
+	<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'user_vendor/daterangepicker/daterangepicker.css' %}"> -->
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'user_css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'user_css/main.css' %}">
+	<!--===============================================================================================-->
+	<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+	<script type="text/javascript">
+		var jQuery_1_7_1 = $.noConflict(true);
+	</script>
+
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+
+<body>
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+				<form class="login100-form validate-form" method="post">
+					{%csrf_token%}
+					<span class="login100-form-title p-b-49">
+						Signup
+					</span>
+
+					<div class="validate-input m-b-23">
+						<div class="wrap-input100">
+							<span class="label-input100">First Name</span>
+							<input class="input100" type="text" id="firstname" name="firstname"
+								onkeyup="validateFirstName()" placeholder="Type your Firstname">
+							<span class="focus-input100" data-symbol="&#xf206;"></span>
+						</div>
+						<small id="firstname-error" class="m-l-30"></small>
+					</div>
+
+
+
+					<div class="validate-input m-b-23" data-validate="Lastname is required">
+						<div class="wrap-input100">
+							<span class="label-input100">Last Name</span>
+							<input class="input100" type="text" id="lastname" name="lastname"
+								onkeyup="validateLastName()" placeholder="Type your Lastname">
+							<span class="focus-input100" data-symbol="&#xf190;"></span>
+						</div>
+						<small id="lastname-error" class="m-l-30"></small>
+					</div>
+
+					<div class="validate-input m-b-23" data-validate="Username is required">
+						<div class="wrap-input100">
+							<span class="label-input100">Username</span>
+							<input class="input100" type="text" id="username" name="username"
+								onkeyup="validateUsername()" placeholder="Type your Username">
+							<span class="focus-input100" data-symbol="&#xf190;"></span>
+						</div>
+						<small id="username-error" class="m-l-30"></small>
+
+					</div>
+
+					<div class="validate-input m-b-23" data-validate="Email is required">
+						<div class="wrap-input100">
+							<span class="label-input100">Email</span>
+							<input class="input100" type="email" id="email" name="email" onkeyup="validateEmail()"
+								placeholder="Type your Email">
+							<span class="focus-input100" data-symbol="&#xf190;"></span>
+						</div>
+						<small id="email-error" class="m-l-30"></small>
+					</div>
+
+					<div class=" validate-input m-b-23" data-validate="PhoneNumber is required">
+						<div class="wrap-input100">
+							<span class="label-input100">Phone Number</span>
+							<input class="input100" type="text" id="phonenumber" name="phonenumber"
+								onkeyup="validatePhonenumber()" placeholder="Type your Phone Nmber" value="+91">
+							<span class="focus-input100" data-symbol="&#xf190;"></span>
+						</div>
+						<small id="phonenumber-error" class="m-l-30"></small>
+					</div>
+
+					<div class="validate-input m-b-23" data-validate="Password is required">
+						<div class="wrap-input100">
+							<span class="label-input100">Password</span>
+							<input class="input100" type="password" id="password1" name="password1"
+								onkeyup="validatePassword()" placeholder="Type your Password">
+							<span class="focus-input100" data-symbol="&#xf190;"></span>
+						</div>
+						<small id="password-error" class="m-l-30"></small>
+					</div>
+
+					<div class="validate-input m-b-23" data-validate="Password is required">
+						<div class="wrap-input100">
+							<span class="label-input100">Retype Password</span>
+							<input class="input100" type="password" id="password2" name="password2"
+								onkeyup="validateCPassword()" placeholder="Retype your Password">
+							<span class="focus-input100" data-symbol="&#xf190;"></span>
+						</div>
+						<small id="cpassword-error" class="m-l-30"></small>
+					</div>
+
+					<!-- <div class="text-right p-t-8 p-b-31">
+						<a href="#">
+							Forgot password?
+						</a>
+					</div> -->
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button type="submit" class="login100-form-btn" id="show-login">
+								Signup
+							</button>
+						</div>
+					</div>
+
+
+
+					<div class="flex-col-c m-t-25">
+						<span class="txt1 p-b-17">
+							Already have account?
+						</span>
+
+						<a href="login" class="txt2">
+							Login
+						</a>
+					</div>
+					{% if messages %}
+					
+						{% for message in messages %}
+						<script>
+							swal('{{message}}', {
+								buttons: false,
+								timer: 2000,
+							  })
+						</script>
+						{% endfor %}
+					
+					{%endif%}
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="dropDownSelect1"></div>
+
+
+
+	<script>
+		var firstnameError = document.getElementById('firstname-error');
+		var lastnameError = document.getElementById('lastname-error')
+		var usernameError = document.getElementById('username-error');
+		var emailError = document.getElementById('email-error');
+		var phonenumberError = document.getElementById('phonenumber-error');
+		var passwordError = document.getElementById('password-error');
+		var cpasswordError = document.getElementById('cpassword-error');
+
+
+
+
+
+
+		function validateFirstName() {
+			console.log("Enterd in validation")
+			var name = document.getElementById('firstname').value.trim();
+			var Required = 2;
+			var left = Required - name.length;
+			if (name.length == 0) {
+				firstnameError.innerHTML = 'name is required';
+				firstnameError.style.color = 'red'
+				return false;
+			}
+			if (left > 0) {
+
+				firstnameError.innerHTML = 'More character required';
+				firstnameError.style.color = 'red'
+				return false;
+
+			}
+
+
+			firstnameError.innerHTML = 'Name is valid';
+			firstnameError.style.color = 'green'
+			return true;
+		}
+		function validateLastName() {
+			var name = document.getElementById('lastname').value.trim();
+			var Required = 4;
+			var left = Required - name.length;
+			if (name.length == 0) {
+				lastnameError.innerHTML = 'name is required';
+				lastnameError.style.color = 'red'
+				return false;
+			}
+			/*if (left > 0) {
+
+				lastnameError.innerHTML = left + 'more character required'; -->
+				lastnameError.style.color = 'red' -->
+				return false;
+
+			}*/
+
+
+			lastnameError.innerHTML = ' ';
+			lastnameError.style.color = 'green'
+			return true;
+		}
+		function validateUsername() {
+			var username = document.getElementById('username').value.trim();
+			var Required = 4;
+			var left = Required - username.length;
+			if (username.length == 0) {
+				usernameError.innerHTML = 'username is required';
+				usernameError.style.color = 'red'
+				return false;
+			}
+			if (left > 0) {
+
+				usernameError.innerHTML = left + 'more character required';
+				usernameError.style.color = 'red'
+				return false;
+
+			}
+			usernameError.innerHTML = 'username is valid';
+			usernameError.style.color = 'green'
+			return true;
+		}
+		function validateEmail() {
+			var email = document.getElementById('email').value.trim();
+			if (email.length == 0) {
+				emailError.innerHTML = 'Email is Required';
+				emailError.style.color = 'red'
+				return false;
+			}
+			if (!email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+				emailError.innerHTML = 'Email is Invalid';
+				emailError.style.color = 'red'
+				return false;
+			}
+			emailError.innerHTML = 'Email is valid';
+			emailError.style.color = 'green'
+			return true;
+		}
+		function validatePhonenumber() {
+			var phonenumber = document.getElementById('phonenumber').value.trim();
+			console.log(phonenumber)
+			var num = phonenumber.replace(/[^\d]/g, '');
+			console.log(num)
+			if (num.length == 0) {
+				phonenumberError.innerHTML = 'Phone number is Required';
+				phonenumberError.style.color = 'red'
+				return false;
+			}
+			if (num.length < 12 || num.length > 12) {
+				phonenumberError.innerHTML = 'Phone number is Invalid';
+				phonenumberError.style.color = 'red'
+				return false;
+
+			}
+
+			phonenumberError.innerHTML = 'Phone number is valid';
+			phonenumberError.style.color = 'green'
+			return true;
+
+		}
+		function validatePassword() {
+			var password = document.getElementById('password1').value.trim();
+			if (password.length == 0) {
+				passwordError.innerHTML = 'Password is Required';
+				passwordError.style.color = 'red'
+				return false;
+			}
+
+			passwordError.innerHTML = 'Password is valid';
+			passwordError.style.color = 'green'
+			return true;
+
+		}
+		function validateCPassword() {
+			var cpassword = document.getElementById('password2').value.trim();
+			if (cpassword.length == 0) {
+				cpasswordError.innerHTML = 'Password is Required';
+				cpasswordError.style.color = 'red'
+				return false;
+			}
+
+			cpasswordError.innerHTML = 'Password is valid';
+			cpasswordError.style.color = 'green'
+			return true;
+
+		}
+
+
+
+
+		jQuery_1_7_1(document).on("submit", "form", function (e) {
+			validateFirstName()
+			validateLastName()
+			validateUsername()
+			validateEmail()
+			validatePhonenumber()
+			validatePassword()
+			validateCPassword()
+
+
+
+			if (validateFirstName() && validateLastName() && validateUsername() && validateEmail() && validatePhonenumber() && validatePassword() && validateCPassword()) {
+
+			} else {
+				e.preventDefault();
+				//swal('Invalid data! Ensure You have entered correct data');
+				return true;
+			}
+		});
+
+	</script>
+
+
+
+
+	<!--===============================================================================================-->
+	<!-- <script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script> -->
+	<!--===============================================================================================-->
+	<!-- <script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script> -->
+	<!--===============================================================================================-->
+	<!-- <script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script> -->
+	<!-- <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script> -->
+	<!--===============================================================================================-->
+	<!-- <script src="{% static 'vendor/select2/select2.min.js' %}"></script> -->
+	<!--===============================================================================================-->
+	<!-- <script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script> -->
+	<!-- <script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script> -->
+	<!--===============================================================================================-->
+	<!-- <script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script> -->
+	<!--===============================================================================================-->
+	<!-- <script src="{% static 'js/main.js' %}"></script> -->
+
+
+</body>
+
+</html>

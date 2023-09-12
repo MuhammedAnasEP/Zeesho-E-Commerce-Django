@@ -1,0 +1,618 @@
+{%extends 'AdminBase.html'%}
+{%load static%}
+{%block content%}
+<style>
+    .insert_button {
+
+        margin-right: 12px;
+
+
+    }
+
+    .headding {
+        position: relative;
+        left: 14px;
+        width: 400px;
+        height: 38px;
+        border-bottom: 5px solid rgb(36, 42, 48);
+        overflow: hidden;
+
+    }
+
+    .headding span {
+
+        font-size: 23px;
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 31px;
+        background-color: rgb(36, 42, 48);
+        display: inline-block;
+        padding: 2px 20px;
+        overflow: hidden;
+        color: #ffffff;
+
+    }
+
+    .headding span:before {
+        position: absolute;
+        content: "";
+        width: 82%;
+        height: 100%;
+        background: rgb(36, 42, 48);
+        z-index: -1;
+        transform: rotate(45deg);
+    }
+
+    .buttons {
+        background-color: rgb(36, 42, 48);
+        color: white;
+        border-radius: 15px;
+    }
+</style>
+<section>
+    <div class="container">
+        <nav class="navbar mt-3  ">
+            <div class="headding ">
+                <span>Product Offer</span>
+            </div>
+            <div class="insert_button"><button type="button" class="btn btn-secondary  buttons" data-toggle="modal"
+                    data-target="#modalForm1"><b> Add Product Offer </b></button></div>
+        </nav>
+        <div class="col-12">
+            <!-- <h3 class=" mt-5 pb-3" style="color: #4D0808; font-family:poppins;">Product offer management</h3>
+            <a href="" class="btn btn-sm text-left btn-outline-primary" data-toggle="modal"
+                data-target="#modalForm1">Add
+                offer</a> -->
+
+
+
+            <!-- add product offer modal -->
+
+            <div class="modal fade" id="modalForm1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true" style="left: 0%;top: 16%;">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form action="AddProductOffer" method="post">
+                            {% csrf_token%}
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Add Product Offer</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                    style="margin-top: -48px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-3">
+                                    <label for="product">Product</label>
+                                    <select required class="custom-select tm-select-accounts" id="product"
+                                        name="product">
+
+                                        {%for product in products%}
+
+                                        <option value="{{product.id}}">{{product.product_name | truncatewords:4}}
+                                        </option>
+                                        {%endfor%}
+                                    </select>
+                                </div>
+                                <div class="md-form mb-3">
+                                    <label data-error="wrong" data-success="right" for="start">Start date</label>
+                                    <input type="date" id="start" class="form-control" value="" onclick="changeStart()" name="starting_date">
+                                </div>
+                                <div class="md-form mb-3">
+                                    <label data-error="wrong" data-success="right" for="end">End date</label>
+                                    <input type="date" id="end" class="form-control" value="" onclick="changeEnd()" name="ending_date">
+                                </div>
+                                <div class="md-form  mt-3">
+                                    <label data-error="wrong" data-success="right" for="offer">Offer % </label>
+                                    <input type="range" name="offer" id="range_weight" value="5" min="1" max="75"
+                                        oninput="range_weight_disp.value = range_weight.value">
+                                    <output id="range_weight_disp"></output>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button type="submit" class="btn btn-secondary">Add</button>
+                            </div>
+                            <!-- modal end -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="table-wrap">
+                        <table class="table" id="myTable">
+                            <thead class="thead-primary text-center">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Offer</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                {%for o in ProductOffer%}
+                                <tr class="alert" role="alert">
+                                    <td>{{o.product |truncatewords:3}}</td>
+                                    <td>{{o.start_date}}</td>
+                                    <td>{{o.end_date}}</td>
+                                    <td>{{o.offer}}%</td>
+                                    <td><a data-toggle="modal" href="#modalEditOffer{{o.id}}"><i
+                                                class="fa fa-pencil" style="color:red;"></i></a></td>
+                                    <td><a onclick=remove_p_offer(event)
+                                            href="RmoveProductOffer/{{o.id}}"><i
+                                                class="fa fa-trash-o" style="color:red;"></i></a></td>
+                                </tr>
+                                <div class="modal fade" id="modalEditOffer{{o.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="myModalLabel" aria-hidden="true" style="left: 0%;top: 16%;">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <form action="EditProductOffer/{{o.id}}" method="post"> 
+                                                {%csrf_token%}
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Edit Product Offer
+                                                    </h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close" style="margin-top: -48px;">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-3">
+                                                        <label for="product">Product</label>
+                                                        <select required class="custom-select tm-select-accounts"
+                                                            id="product" name="product">
+
+                                                            {%for product in products%}
+
+                                                            <option value="{{product.id}}">{{product.product_name | truncatewords:4}}
+                                                            </option>
+                                                            {%endfor%}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right" for="starte">Start
+                                                            date</label>
+                                                        <input type="date" id="starte" class="form-control" value="{{o.start_date|date:'Y-m-d'}}" onclick="onchangeStart()" name="starting_date">
+                                                    </div>
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right" for="ende">End
+                                                            date</label>
+                                                        <input type="date" id="ende" class="form-control" onclick="onchangeEnd()"
+                                                            value="{{o.end_date|date:'Y-m-d'}}" name="ending_date">
+                                                    </div>
+                                                    <div class="md-form  mt-3">
+                                                        <label data-error="wrong" data-success="right" for="offer">Offer
+                                                            %
+                                                        </label>
+                                                        <input type="range" name="offer" id="range_weight"value="{{o.offer}}" min="1" max="75"oninput="range_weight_disp.value = range_weight.value">
+                                                        <output id="range_weight_disp"></output>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="modal-footer d-flex justify-content-center">
+                                                    <button class="btn btn-secondary">Add</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {%endfor%}
+                                
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <nav class="navbar mt-5 ">
+            <div class="headding ">
+                <span>Category Offer</span>
+            </div>
+            <div class="insert_button"><button type="button" class="btn btn-secondary  buttons" data-toggle="modal"
+                    data-target="#modalForm2"><b> Add Category Offer </b></button></div>
+        </nav>
+        <div class="col-12">
+            <!-- <h3 class=" mt-5 pb-3" style="color: #4D0808; font-family:poppins;">Product offer management</h3>
+            <a href="" class="btn btn-sm text-left btn-outline-primary" data-toggle="modal"
+                data-target="#modalForm1">Add
+                offer</a> -->
+
+
+
+            <!-- add product offer modal -->
+
+            <div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true" style="left: 0%;top: 16%;">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form action="AddCategoryOffer" method="post">
+                            {% csrf_token%}
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Add Category Offer</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                    style="margin-top: -48px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-3">
+                                    <label for="category">Category</label>
+                                    <select required class="custom-select tm-select-accounts" id="category"
+                                        name="category">
+
+                                        {%for c in category%}
+
+                                        <option value="{{c.id}}">{{c.category_name| truncatewords:4}}
+                                            
+                                        </option>
+                                        {%endfor%}
+                                    </select>
+                                </div>
+                                <div class="md-form mb-3">
+                                    <label data-error="wrong" data-success="right" for="starting_date">Start date</label>
+                                    <input type="date" id="starting_date" class="form-control" onclick="cat_changeStart()" value="" name="starting_date">
+                                </div>
+                                <div class="md-form mb-3">
+                                    <label data-error="wrong" data-success="right" for="ending_date">End date</label>
+                                    <input type="date" id="ending_date" onclick="cat_changeEnd()" class="form-control" value="" name="ending_date">
+                                </div>
+                                <div class="md-form  mt-3">
+                                    <label data-error="wrong" data-success="right" for="offer">Offer % </label>
+                                    <input type="range" name="offer" id="range_weight" value="5" min="1" max="75"
+                                        oninput="range_weight_disp.value = range_weight.value">
+                                    <output id="range_weight_disp"></output>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button type="submit" class="btn btn-secondary">Add</button>
+                            </div>
+                            <!-- modal end -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="table-wrap">
+                        <table class="table" id="myTable2">
+                            <thead class="thead-primary text-center">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Offer</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                {%for o in CategoryOffer%}
+                                <tr class="alert" role="alert">
+                                    <td>{{o.category |truncatewords:3}}</td>
+                                    <td>{{o.start_date}}</td>
+                                    <td>{{o.end_date}}</td>
+                                    <td>{{o.offer}}%</td>
+                                    <td><a data-toggle="modal" href="#modalEditCategoryOffer{{o.id}}"><i
+                                                class="fa fa-pencil" style="color:red;"></i></a></td>
+                                    <td><a onclick=remove_c_offer(event)
+                                            href="RmoveCategoryOffer/{{o.id}}"><i
+                                                class="fa fa-trash-o" style="color:red;"></i></a></td>
+                                </tr>
+                                <div class="modal fade" id="modalEditCategoryOffer{{o.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="myModalLabel" aria-hidden="true" style="left: 0%;top: 16%;">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <form action="EditCategoryOffer/{{o.id}}" method="post"> 
+                                                {%csrf_token%}
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Edit Category Offer
+                                                    </h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close" style="margin-top: -48px;">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-3">
+                                                        <label for="category">Category</label>
+                                                        <select required class="custom-select tm-select-accounts"
+                                                            id="category" name="category">
+                                                            {%for c in category%}
+                                                            <option value="{{c.id}}">{{c.category_name | truncatewords:4}}
+                                                            </option>
+                                                            {%endfor%}
+                                                        </select>
+                                                    </div>
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right" for="starting_edit">Start
+                                                            date</label>
+                                                        <input type="date" id="starting_edit" class="form-control" onclick="cat_onchangeStart() " value="{{o.start_date|date:'Y-m-d'}}" name="starting_date">
+                                                    </div>
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right" for="ending_edit">End
+                                                            date</label>
+                                                        <input type="date" id="ending_edit" onclick="cat_onchangeEnd() " class="form-control"
+                                                            value="{{o.end_date|date:'Y-m-d'}}" name="ending_date">
+                                                    </div>
+                                                    <div class="md-form  mt-3">
+                                                        <label data-error="wrong" data-success="right" for="offer">Offer
+                                                            %
+                                                        </label>
+                                                        <input type="range" name="offer" id="range_weight"
+                                                            value="{{o.offer}}" min="1" max="75"
+                                                            oninput="range_weight_disp.value = range_weight.value">
+                                                        <output id="range_weight_disp"></output>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="modal-footer d-flex justify-content-center">
+                                                    <button class="btn btn-secondary">Add</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {%endfor%}
+                                
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{%endblock%}
+{%block js%}
+<script>
+    function remove_p_offer(event) {
+        event.preventDefault();
+        var link = event.currentTarget.href;
+        swal({
+            title: "Are you sure?",
+            text: "Once done, action cannot be reversed",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("offer removed!", {
+                        icon: "success",
+                    }).then(() => {
+                        window.location = link;
+                    });
+                } else {
+                    /* swal("Your imaginary file is safe!");*/
+                }
+            });
+    }
+    function remove_c_offer(event) {
+        event.preventDefault();
+        var link = event.currentTarget.href;
+        swal({
+            title: "Are you sure?",
+            text: "Once done, action cannot be reversed",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("offer removed!", {
+                        icon: "success",
+                    }).then(() => {
+                        window.location = link;
+                    });
+                } else {
+                    /* swal("Your imaginary file is safe!");*/
+                }
+            });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    function changeStart() {
+      let today = new Date()
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      today = yyyy + '-' + mm + '-' + dd;
+      start = document.getElementById('start').value
+      console.log(start)
+      dd = new Date(start).getDate() + 1;
+      mm = new Date(start).getMonth() + 1;
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      yyyy = new Date(start).getFullYear();
+      date = yyyy + '-' + mm + '-' + dd;
+      document.getElementById('start').setAttribute("min", today);
+    }
+  
+    
+    function changeEnd() {
+      start = document.getElementById('start').value
+      document.getElementById('end').setAttribute("min", start);
+      return true;
+    }
+  
+    
+    function onchangeStart() {
+        let today = new Date()
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        start = document.getElementById('starte').value
+        console.log(start)
+        dd = new Date(start).getDate() + 1;
+        mm = new Date(start).getMonth() + 1;
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        yyyy = new Date(start).getFullYear();
+        date = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('starte').setAttribute("min", today);
+      }
+  
+    function onchangeEnd(){
+      start_date = document.getElementById('starte').value
+      document.getElementById('ende').setAttribute("min", start_date);
+    }
+
+
+
+    function cat_changeStart() {
+        let today = new Date()
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        start = document.getElementById('starting_date').value
+        console.log(start)
+        dd = new Date(start).getDate() + 1;
+        mm = new Date(start).getMonth() + 1;
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        yyyy = new Date(start).getFullYear();
+        date = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('starting_date').setAttribute("min", today);
+      }
+    
+      
+      function cat_changeEnd() {
+        start = document.getElementById('starting_date').value
+        document.getElementById('ending_date').setAttribute("min", start);
+        return true;
+      }
+    
+      
+      function cat_onchangeStart() {
+          let today = new Date()
+          var dd = today.getDate();
+          var mm = today.getMonth() + 1;
+          var yyyy = today.getFullYear();
+          if (dd < 10) {
+            dd = '0' + dd;
+          }
+          if (mm < 10) {
+            mm = '0' + mm;
+          }
+          today = yyyy + '-' + mm + '-' + dd;
+          start = document.getElementById('starting_edit').value
+          console.log(start)
+          dd = new Date(start).getDate() + 1;
+          mm = new Date(start).getMonth() + 1;
+          if (dd < 10) {
+            dd = '0' + dd;
+          }
+          if (mm < 10) {
+            mm = '0' + mm;
+          }
+          yyyy = new Date(start).getFullYear();
+          date = yyyy + '-' + mm + '-' + dd;
+          document.getElementById('starting_edit').setAttribute("min", today);
+        }
+    
+      function cat_onchangeEnd(){
+        start_date = document.getElementById('starting_edit').value
+        document.getElementById('ending_edit').setAttribute("min", start_date);
+      }
+  </script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      $('#myTable2').DataTable({
+        dom: 'Bfrtip',
+        
+      });
+    });
+  </script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+{%endblock%}

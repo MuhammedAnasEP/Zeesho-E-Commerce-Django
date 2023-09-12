@@ -1,0 +1,486 @@
+{%extends 'AdminBase.html'%}
+{%load static%}
+{%block content%}
+<style>
+    .insert_button {
+        margin-right: 12px;
+    }
+
+    .headding {
+        position: relative;
+        left: 14px;
+        width: 400px;
+        height: 39px;
+        border-bottom: 5px solid rgb(36, 42, 48);
+        overflow: hidden;
+    }
+
+    .headding span {
+        font-size: 23px;
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 31px;
+        background-color: rgb(36, 42, 48);
+        display: inline-block;
+        padding: 2px 20px;
+        overflow: hidden;
+        color: #ffffff;
+    }
+
+    .headding span:before {
+        position: absolute;
+        content: "";
+        width: 50%;
+        height: 100%;
+        background: rgb(36, 42, 48);
+        z-index: -1;
+        transform: rotate(45deg);
+    }
+
+    .buttons {
+        background-color: rgb(36, 42, 48);
+        color: white;
+        border-radius: 15px;
+    }
+</style>
+<section>
+    <div class="container">
+        <nav class="navbar mt-3 mb-4 ">
+            <div class="headding ">
+                <span>Coupon</span>
+            </div>
+            <div class="insert_button"><button type="button" class="btn btn-secondary  buttons" data-toggle="modal"
+                    data-target="#modalForm1"><b> Add Coupon </b></button></div>
+        </nav>
+        <div class="col-12">
+            <!-- <h3 class=" mt-5 pb-3" style="color: #4D0808; font-family:poppins;">Product offer management</h3>
+            <a href="" class="btn btn-sm text-left btn-outline-primary" data-toggle="modal"
+                data-target="#modalForm1">Add
+                offer</a> -->
+            <!-- add product offer modal -->
+            <div class="modal fade" id="modalForm1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true" style="left: 0%;top: 6%;">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form action="AddCoupon" method="post">
+                            {% csrf_token%}
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold">Add Coupon</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                    style="margin-top: -48px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-3">
+                                    <label data-error="wrong" data-success="right" for="code">Code</label>
+                                    <input type="text" id="code" class="form-control" value="" name="code">
+                                </div>
+                                <div class="md-form mb-3">
+                                    <label data-error="wrong" data-success="right" for="start">Start date</label>
+                                    <input type="date" id="start" class="form-control" onchange="validateSdate()" onclick="changeStart()" value="" name="starting_date">
+                                    <span id=start_date-error></span>
+                                </div>
+                                <div class="md-form mb-3">
+                                    <label data-error="wrong" data-success="right" for="end">End date</label>
+                                    <input type="date" id="end" class="form-control" onchange="validateEdate()" onclick="changeEnd()"  value="" name="ending_date">
+                                    <span id=expiry_date-error></span>
+                                </div>
+                                <div class="md-form mb-3">
+                                    <label data-error="wrong" data-success="right" for="dis">Discount Amount</label>
+                                    <input type="number" id="dis" class="form-control" onkeyup="validatedis_amnt()" value="" name="discount_amount">
+                                    <span id=dis_amnt-error></span>
+                                </div>
+                                <div class="md-form mb-3">
+                                    <label data-error="wrong" data-success="right" for="min">Minimum Amount</label>
+                                    <input type="number" id="min" class="form-control" onkeyup="validateMin_amnt()" value="" name="minimum_amount">
+                                    <span id=min_amnt-error></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-secondary">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-wrap">
+                        <table class="table" id="myTable">
+                            <thead class="thead-primary text-center">
+                                <tr>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Discount Amount </th>
+                                    <th scope="col">Start Date</th>
+                                    <th scope="col">End Date</th>
+                                    <th scope="col">Minimum Amount</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr class="alert" role="alert">
+                                    {%for coupon in coupons%}
+                                    <td>{{coupon.code}}</td>
+                                    <td>{{coupon.discount_amount}}</td>
+                                    <td>{{coupon.start_date}}</td>
+                                    <td>{{coupon.end_date}}</td>
+                                    <td>{{coupon.min_amount}}</td>
+                                    <td>
+
+                                        {% if coupon.is_active %}
+
+                                        <a onclick=p_off_block(event) href="couponBlock/{{coupon.id}}"
+                                            class="btn btn-outline-danger"><i>Block</i></a>
+
+                                        {% else %}
+
+                                        <a onclick=p_off_unblock(event) href="couponUnblock/{{coupon.id}}"
+                                            class="btn btn-outline-danger">unblock</i></a>
+
+                                        {% endif %}
+
+
+
+                                    </td>
+                                    <td><a data-toggle="modal" data-target="#modalEditCoupon{{coupon.id}}"><i
+                                                class="fa fa-pencil" style="color:red;"></i></a></td>
+                                    <td><a onclick=remove_p_offer(event)
+                                            href="couponRemove/{{coupon.id}}"><i class="fa fa-trash-o"
+                                                style="color:red;"></i></a></td>
+                                </tr>
+                                <div class="modal fade" id="modalEditCoupon{{coupon.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="myModalLabel" aria-hidden="true" style="left: 0%;top: 6%;">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <form action="couponEdit/{{coupon.id}}" method="post"> 
+                                                {%csrf_token%}
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Edit Coupon</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close" style="margin-top: -48px;">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right"
+                                                            for="code">Code</label>
+                                                        <input type="text" id="code" class="form-control"
+                                                            value="{{coupon.code}}" name="code">
+                                                    </div>
+
+
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right" for="starte">Start
+                                                            date</label>
+                                                        <input type="date" id="starte" class="form-control"
+                                                            value="{{coupon.start_date|date:'Y-m-d'}}" onclick="onchangeStart()" name="start" >
+                                                    </div>
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right" for="ende">End
+                                                            date</label>
+                                                        <input type="date" id="ende" class="form-control"
+                                                            value="{{coupon.end_date|date:'Y-m-d'}}" onclick="onchangeEnd()" name="end">
+                                                    </div>
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right"
+                                                            for="dis">Discount Amount</label>
+                                                        <input type="number" id="dis" class="form-control"
+                                                            value="{{coupon.discount_amount}}" name="dis">
+                                                    </div>
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right" for="min">Minimum
+                                                            Amount</label>
+                                                        <input type="number" id="min" class="form-control"
+                                                            value="{{coupon.min_amount}}" name="min">
+                                                    </div>
+
+
+
+                                                </div>
+                                                <div class="modal-footer d-flex justify-content-center">
+                                                    <button type="submit" class="btn btn-secondary">Add</button>
+                                                </div>
+
+
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {%endfor%}
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock%}
+
+{%block js%}
+<script>
+    function p_off_block(event) {
+        event.preventDefault();
+        var link = event.currentTarget.href;
+        swal({
+            title: "Are you sure?",
+            text: "once blocked, Coupon becomes invalid",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Coupon Blocked!", {
+                        icon: "success",
+                    }).then(() => {
+                        window.location = link;
+                    });
+                } else {
+                    /* swal("Your imaginary file is safe!");*/
+                }
+            });
+    }
+    function p_off_unblock(event) {
+        event.preventDefault();
+        var link = event.currentTarget.href;
+        swal({
+            title: "Are you sure?",
+            text: "If unblocked, coupon will be valid",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("coupon unblocked", {
+                        icon: "success",
+                    }).then(() => {
+                        window.location = link;
+                    });
+                } else {
+                    /* swal("Your imaginary file is safe!");*/
+                }
+            });
+    }
+    function remove_p_offer(event) {
+        event.preventDefault();
+        var link = event.currentTarget.href;
+        swal({
+            title: "Are you sure?",
+            text: "Once done, action cannot be reversed",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("coupon removed!", {
+                        icon: "success",
+                    }).then(() => {
+                        window.location = link;
+                    });
+                } else {
+                    /* swal("Your imaginary file is safe!");*/
+                }
+            });
+    }
+</script>
+
+
+
+
+<script>
+    function changeStart() {
+      let today = new Date()
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      today = yyyy + '-' + mm + '-' + dd;
+      start = document.getElementById('start').value
+      console.log(start)
+      dd = new Date(start).getDate() + 1;
+      mm = new Date(start).getMonth() + 1;
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      yyyy = new Date(start).getFullYear();
+      date = yyyy + '-' + mm + '-' + dd;
+      document.getElementById('start').setAttribute("min", today);
+    }
+  
+    function validateSdate(){
+      var start = document.getElementById('start').value;
+      var start_dateError = document.getElementById('start_date-error');
+      console.log(start)
+          if(start.match(/^[0-9/-]+$/))
+            {
+              start_dateError.innerHTML='Date is valid';
+              start_dateError.style.color='green'
+                return true;
+            }
+            else{
+              start_dateError.innerHTML='Date is not valid';
+              start_dateError.style.color='red'
+                return false;
+            }
+    }
+    function validateEdate(){
+      var end = document.getElementById('end').value;
+      var expiry_dateError = document.getElementById('expiry_date-error');
+          if(end.match(/^[0-9/-]+$/))
+            {
+              expiry_dateError.innerHTML='Date is valid';
+              expiry_dateError.style.color='green'
+                return true;
+            }
+            else{
+              expiry_dateError.innerHTML='Date is not valid';
+              expiry_dateError.style.color='red'
+                return false;
+            }
+    }
+  
+    function changeEnd() {
+      start = document.getElementById('start').value
+      document.getElementById('end').setAttribute("min", start);
+      return true;
+    }
+  
+    function validatedis_amnt(){
+    var dis_amntError = document.getElementById('dis_amnt-error');
+      var dis_amnt = document.getElementById('dis').value;
+      if(dis_amnt.match(/^[0-9]+$/))
+          {
+            if(dis_amnt < 10){
+              dis_amntError.innerHTML='Discount should be greater than 10';
+              dis_amntError.style.color='red'
+                return false;  
+            }
+            dis_amntError.innerHTML='Price is valid';
+            dis_amntError.style.color='green'
+              return true;
+          }
+        else{
+            dis_amntError.innerHTML ='Only Positive Numbers are to be entered';
+            dis_amntError.style.color='red'
+            return false;
+          }
+    }
+    
+    function validateMin_amnt(){
+      var min_amntError = document.getElementById('min_amnt-error');
+        var min_amnt = document.getElementById('min').value;
+        
+        if(min_amnt.length == 0){
+          min_amntError.innerHTML='Enter atleast zero Amount';
+          min_amntError.style.color='red'
+          return false;
+        }
+        else if(min_amnt.match(/^[0-9]+$/))
+            {
+              min_amntError.innerHTML='Amount is valid';
+              min_amntError.style.color='green'
+                return true;
+            }
+          else{
+              min_amntError.innerHTML ='Only Positive Numbers are to be entered';
+              min_amntError.style.color='red'
+              return false;
+            }
+      }
+      jQuery_1_7_1(document).on("submit", "form", function (e) {
+        validatedis_amnt() 
+        validateSdate()
+        validateEdate()
+        validateMin_amnt()
+    
+    
+    
+        if (validatedis_amnt() && validateSdate() && validateEdate() && validateMin_amnt()) {
+    
+        } else {
+            e.preventDefault();
+            //swal('Invalid data! Ensure You have entered correct data');
+            return true;
+        }
+        });
+  
+  </script>
+
+
+
+  <script>
+    function onchangeStart() {
+        let today = new Date()
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        start = document.getElementById('starte').value
+        console.log(start)
+        dd = new Date(start).getDate() + 1;
+        mm = new Date(start).getMonth() + 1;
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+        yyyy = new Date(start).getFullYear();
+        date = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('starte').setAttribute("min", today);
+      }
+  
+    function onchangeEnd(){
+      start_date = document.getElementById('starte').value
+      document.getElementById('ende').setAttribute("min", start_date);
+    }
+  </script>
+
+
+
+
+<script>
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+      });
+    });
+  </script>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <!-- <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+{%endblock%}

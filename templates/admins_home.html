@@ -1,0 +1,135 @@
+
+{%extends 'AdminBase.html'%}
+{%load static%}
+{%block content%}
+  <style>
+    .headding{
+			
+      position: relative;
+      
+      width: 400px;
+      height: 39px;
+      border-bottom: 5px solid rgb(36, 42, 48);
+      overflow: hidden;
+      
+      }
+      
+      .headding span{
+      
+       font-size: 23px;
+       font-family: Arial, Helvetica, sans-serif;
+       line-height: 31px;
+       background-color: rgb(36, 42, 48);
+       display: inline-block;
+       padding: 2px 20px;
+       overflow: hidden;
+       color: #ffffff;
+    
+      }
+    
+      .headding span:before{
+      position: absolute;
+      content: "";
+      width: 44%;
+      height: 100%;
+      background: rgb(36, 42, 48);
+      z-index: -1;
+      transform: rotate(45deg);
+      }  
+  </style>
+ 
+
+  
+
+  <section class="ftco-section mt-2 pt-1">
+    <div class="container">
+      <nav class="navbar d-flex justify-content-start">
+        <div class="headding">
+          <span>Users</span>
+        </div>
+      </nav>
+    
+      <div class="row justify-content-center">
+        
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-wrap">
+            <table class="table" id="myTable">
+              <thead class="thead-primary text-center">
+                <tr>
+                  <th >User Name</th>
+                  <th >Email</th>
+                  <th >First Name</th>
+                  <th >Last Name</th>
+                  <th >Block</th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                {% for dis in details %}
+                <tr class="alert" role="alert">
+                  {% if dis.is_superuser%}
+                  {%elif dis.phone_number == 0%}
+                  {%else%}
+                  <td>{{dis.username}}</td>
+                  <td>{{dis.email}}</td>
+                  <td>{{dis.first_name}}</td>
+                  <td>{{dis.last_name}}</td>
+
+                  {% if dis.is_active%}
+                  <td><button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#modal{{dis.id}}">Block</button></td>
+                  {%else%}
+                  <td><button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modal1{{dis.id}}">Unblock</button></a></td>
+                  {%endif%}
+                  {%endif%}
+                </tr>
+
+                <div class="modal fade" id="modal{{dis.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to Block this user ?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="user_block/{{dis.id}}"><button type="button" class="btn btn-danger">Block</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal fade" id="modal1{{dis.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to Unblock this user ?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="user_unblock/{{dis.id}}"><button type="button" class="btn btn-success">Unblock</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!--Table End-->
+
+{%endblock%}
+

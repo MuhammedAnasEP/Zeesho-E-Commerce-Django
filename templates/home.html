@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- Categories Section Begin -->
+    <section class="categories">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 p-0">
+                    <div class="categories__item categories__large__item set-bg"
+                        data-setbg="{% static 'img/categories/category-1.jpg' %}">
+                        <div class="categories__text">
+                            <h1>Women’s fashion</h1>
+                            <p>500 items</p>
+                            <a href="shop/22">Shop now</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                            <div class="categories__item set-bg"
+                                data-setbg="{% static 'img/categories/category-2.jpg' %}">
+                                <div class="categories__text">
+                                    <h4>Men’s fashion</h4>
+                                    <p>358 items</p>
+                                    <a href="shop/21">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                            <div class="categories__item set-bg"
+                                data-setbg="{% static 'img/categories/category-3.jpg' %}">
+                                <div class="categories__text">
+                                    <h4>Kid’s fashion</h4>
+                                    <p>273 items</p>
+                                    <a href="shop/24">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Categories Section End -->
+
+    <!-- Product Section Begin -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="section-title">
+                        <h4>new products</h4>
+                    </div>
+                </div>
+                <!-- <div class="col-lg-8 col-md-8">
+                    <ul class="filter__controls">
+                        <li class="active" data-filter="*">All</li>
+                        <li data-filter=".women">Women’s</li>
+                        <li data-filter=".men">Men’s</li>
+                        <li data-filter=".kid">Kid’s</li>
+                    </ul>
+                </div> -->
+            </div>
+            <div class="row property__gallery">
+                {%for p in venues%}
+                <div class="col-lg-3 col-md-4 col-sm-6  ">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{{p.image.url}}">
+                            <!-- <div class="label new">New</div> -->
+                            <ul class="product__hover">
+
+                                <li><a href="{{p.image.url}}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a ><span class="icon_heart_alt plus-wishlist" pid="{{p.id}}"></span></a></li>
+
+                                <li><a href="/add_to_cart_from_home/{{p.Category_id}}/{{p.id}}"><span class="icon_bag_alt"></span></a></li>
+                            </ul>
+                            {%if p.p_offer > 0 and p.c_offer is 0 %}
+                            {%if p_active == False%}
+                            
+                            {%else%}
+
+                            <div class="p-b-18" style="position: absolute;" >
+                                <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                        {{p.p_offer}}% off
+                                    </span>
+                                </div>
+                            {%endif%}
+
+                            
+                            {%elif p.p_offer is 0 and p.c_offer > 0%}
+                            {%if c_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
+                            <div class="p-b-18" style="position: absolute;" >
+                                <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                    {{p.c_offer}}% off
+                                </span>
+                            </div>
+                            {%endif%}
+                            
+
+
+
+                            {%elif p.p_offer > p.c_offer and p.p_offer > 0%}
+                            {%if p_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
+                            <div class="p-b-18" style="position: absolute;" >
+                                <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                    {{p.p_offer}}% off
+                                </span>
+                            </div>
+                            {%endif%}
+                            
+
+
+                            {%elif p.p_offer < p.c_offer and p.c_offer > 0%}
+                            {%elif p.c_offer_price < p.p_offer_price and p.p_offer_price > 1 %}
+                            {%if c_active == False%}
+                            {%else%}
+                            <div class="p-b-18" style="position: absolute;" >
+                                <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                    {{p.c_offer}}% off
+                                </span>
+                            </div>
+                            {%endif%}
+                            
+
+
+                            {%elif p.p_offer == p.c_offer and p.c_offer > 0 and p.p_offer > 0%}
+                            {%if p_active == False%}
+                            
+                            {%else%}
+                            <div class="p-b-18" style="position: absolute;" >
+                                <span class="block1-name stext-102 trans-04 btn btn-light btn-sm bg-success text-right"
+                                style="color: #fcf9f9;border: none;margin-top: 0.0rem;">
+                                    {{p.p_offer}}% off
+                                </span>
+                            </div>
+                            {%endif%}
+                            
+
+                            {%endif%}
+                            
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="/product/{{p.id}}">{{p.product_name}}</a></h6>
+                            
+                            {%if p.p_offer_price < 1 and p.c_offer_price < 1  %}
+                            <div class="product__price">₹ {{p.price}}</div>
+
+                            {%elif p.p_offer_price > 1 and p.c_offer_price is 0 %}
+                            {%if p_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
+
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{p.p_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                            </span>
+                            {%endif%}
+
+                            {%elif p.p_offer_price < 1 and p.c_offer_price > 1 %}
+                            {%if c_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{p.c_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                            </span>
+                            {%endif%}
+
+                            {%elif p.p_offer_price < p.c_offer_price and p.c_offer_price > 1 %}
+                            {%if p_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{p.p_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                            </span>
+                            {%endif%}
+
+
+                            {%elif p.c_offer_price < p.p_offer_price and p.p_offer_price > 1 %}
+                            {%if c_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{p.c_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                            </span>
+                            {%endif%}
+
+                            {%elif p.c_offer_price == p.p_offer_price and p.p_offer_price > 1 and p.c_offer_price > 1 %}
+                            {%if p_active == False%}
+                            <div class="product__price">₹ {{p.price}}</div>
+                            {%else%}
+                            <span class="stext-105" style="color:rgb(52, 151, 52);">
+                                ₹{{p.p_offer_price}} &nbsp;
+                                <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                            </span>
+                            {%endif%}
+
+                            {%else%}
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </section>
+    <!-- Product Section End -->
+    <!-- <br/><br/>
+    {{venues}}<br/>
+    Has Previos : {{venues.has_previous}}<br/>
+    Has Next : {{venues.has_next}}<br/>
+    Current Page : {{venues.number}}<br/>
+    Number of Pages : {{venues.paginator.num_pages}}<br/>
+    <hr><br/><br/> -->
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center ">
+            {%if venues.has_previous%}
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo </a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ venues.previous_page_number }}">Previous</a></li>
+            {%else%}
+            <li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+            {%endif%}
+
+            <!--<li class="page-item disabled"> <a href="#" class="page-link"> Page {{ venues.number }} of {{venues.paginator.num_pages }}</a></li>-->
+
+            {%for i in nums %}
+            <li class="page-item"> <a href="?page={{forloop.counter}}" class="page-link">{{forloop.counter}}</a></li>
+            {%endfor%}
+
+            {%if venues.has_next%}
+
+            <li class="page-item"><a class="page-link" href="?page={{ venues.next_page_number}}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{venues.paginator.num_pages}}"> &raquo</a></li>
+            {%else%}
+            <li class="page-item disabled"><a class="page-link" href="">Next</a></li>
+            {%endif%}
+        </ul>
+    </nav>
+    <br/>
+
+    <!-- <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav> -->
+
+{%if messages%}
+{%for m in messages%}
+<script>
+    swal('{{m}}',{
+        button : false,
+        timer : 2000,
+    })
+</script>
+{%endfor%}
+{%endif%}
+<script type="text/javascript">
+    
+    function getCookie(name){
+       
+        // Split cookie string and get all individual name = value pairs in an array
+        var cookieArr = document.cookie.split(";");
+        // Loop through the array elements
+        for (var i = 0; i < cookieArr.length; i++){
+            var cookiePair = cookieArr[i].split("=");
+            /* Removing whitespace at the begning of the cookie name and compare it with the given string */
+            if (name == cookiePair[0].trim()){
+                // Decode the cookie value and return
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        // Return null if not found
+        return null;
+    }
+    function uuidGen() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+          var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
+      }
+
+    var cart =JSON.parse(getCookie('cart'));
+
+    console.log('Cart : ',cart)
+    if (cart == undefined){
+        cart =uuidGen()
+        console.log('Cart was created')
+        document.cookie = 'cart = ' + JSON.stringify(cart) +";domain=;path="
+    }
+</script>
+{% endblock %}

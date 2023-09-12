@@ -1,0 +1,236 @@
+{%extends 'AdminBase.html'%}
+{% load static %}
+{%block content%}
+
+<style>
+
+  .headding{
+    position: relative;
+    width: 400px;
+    height: 39px;
+    border-bottom: 5px solid rgb(36, 42, 48);
+    overflow: hidden;
+    
+  }
+  
+  .headding span{
+   
+   font-size: 23px;
+   font-family: Arial, Helvetica, sans-serif;
+   line-height: 31px;
+   background-color: rgb(36, 42, 48);
+   display: inline-block;
+   padding: 2px 20px;
+   overflow: hidden;
+   color: #ffffff;
+
+  }
+
+  .headding span:before{
+    position: absolute;
+    content: "";
+    width: 55%;
+    height: 100%;
+    background: rgb(36, 42, 48);
+    z-index: -1;
+    transform: rotate(45deg);
+  }
+  
+  .buttons{
+    background-color:  rgb(36, 42, 48); 
+    color: white;
+    border-radius: 15px;
+  }
+
+
+  .sub_headding{
+    position: relative;
+    width: 400px;
+    height: 37px;
+    border-bottom: 5px solid rgb(36, 42, 48);
+    overflow: hidden;
+    
+  }
+  
+  .sub_headding span{
+    font-size: 23px;
+   font-family: Arial, Helvetica, sans-serif;
+   line-height: 31px;
+   background-color: rgb(36, 42, 48);
+   display: inline-block;
+   padding: 2px 20px;
+   overflow: hidden;
+   color: #ffffff;
+
+  }
+
+  .sub_headding span:before{
+    position: absolute;
+    content: "";
+    width: 80%;
+    height: 100%;
+    background: rgb(36, 42, 48);
+    z-index: -1;
+    transform: rotate(45deg);
+  }
+</style>
+
+  
+<!--Table Begning-->
+  <section class="mb-5 pb-5 ">
+    <div class="container">
+      <nav class="navbar mt-3 mb-4">
+        <div class="headding">
+          <span>Category</span>
+        </div>
+        <div class=" insert_button"><a href="add_category"><button type="button" class="btn btn-secondary  buttons"><b> Add Category </b></button></a></div>
+      </nav>
+      <div class="row justify-content-center">
+     </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-wrap">
+            <table class="table" id="myTable">
+              <thead class="thead-primary text-center">
+                <tr>
+                  <th>Category Name</th>
+                  <th>Image</th>
+                  <th scope="col">Update</th>
+                  <th scope="col">Delete</th>
+                </tr>
+              </thead>
+              <tbody class="text-center ">
+                {% for cat in details %}
+                <tr class="alert" role="alert">
+                  <td>{{cat.category_name}}</td>
+                  <td class="border-bottom-0 d-flex justify-content-center">
+                    <div class="img" style="background-image: url({{cat.cat_image.url}});"></div>
+                  </td>
+                  <td><a href="edit_category/{{cat.id}}"><button type="button"
+                        class="btn btn-primary rounded-pill">Edit</button></a></td>
+                  <td><button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal" data-bs-target="#modal{{cat.id}}">Delete</button></a></td>
+                </tr>
+                <div class="modal fade" id="modal{{cat.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to delete the Category ?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="category_delete/{{cat.id}}"><button type="button" class="btn btn-primary">Delete</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<!--Table End-->
+<div class="mb-5" style="border: 1px solid rgb(97, 104, 105);"></div>
+
+<!--Table Begning-->
+<section class=" mb-5 pb-5 col-sm-12">
+  <div class="container">
+    <nav class="navbar mb-4 ">
+      <div class="sub_headding">
+        <span>Sub Category</span>
+      </div>
+      <div class=" insert_button"><a href="add_subcategory"><button type="button" class="btn btn-secondary  buttons"><b> Add sub Category </b></button></a></div>
+    </nav>
+    <div class="row justify-content-center">
+      
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-wrap">
+          <table class="table" id="myTable2">
+            <thead class="thead-primary text-center">
+              <tr>
+
+                <th>Main Category</th>
+                <th>Sub Category</th>
+                <th>Image</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+
+              {% for cat in subcat %}
+              <tr class="alert" role="alert">
+                <td>{{cat.Main_category}}</td>
+                <td>{{cat.name}}</td>
+                <td class="border-bottom-0 d-flex justify-content-center">
+                  <div class="img" style="background-image: url({{cat.image.url}});"></div>
+                </td>
+                <td><a href="edit_subcategory/{{cat.id}}"><button type="button"
+                      class="btn btn-primary rounded-pill">Edit</button></a></td>
+                <td><button
+                      type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal" data-bs-target="#modal{{cat.id}}">Delete</button></td>
+              </tr>
+              <div class="modal fade" id="modal{{cat.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to delete the Category ?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href="subcategory_delete/{{cat.id}}"><button type="button" class="btn btn-primary">Delete</button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Table End-->
+<!-- JavaScript Bundle with Popper -->
+
+{%endblock%}
+{%block js%}
+<script>
+  $(document).ready(function () {
+    $('#myTable').DataTable({
+      dom: 'Bfrtip',
+      
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $('#myTable2').DataTable({
+      dom: 'Bfrtip',
+      
+    });
+  });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+{%endblock%}

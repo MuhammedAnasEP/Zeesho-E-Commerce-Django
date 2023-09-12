@@ -1,0 +1,190 @@
+{%extends 'base.html'%}
+{% load static %}
+{%block content%}
+
+    <!-- Breadcrumb Begin -->
+    {% for p in pro %}
+    <div class="breadcrumb-option">
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    
+                    <div class="breadcrumb__links">
+                        <a href="/"><i class="fa fa-home"></i> Home</a>
+                        <a href="#">{{p.Category}} </a>
+                        <span>{{p.product_name}}</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Product Details Section Begin -->
+    <section class="product-details spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="product__details__pic">
+                        <div class="product__details__pic__left product__thumb nice-scroll">
+                            <a class="pt active" href="#product-1">
+                                <img src="{{p.image.url}}" alt="">
+                            </a>
+                            <a class="pt" href="#product-2">
+                                <img src="{{p.image1.url}}" alt="">
+                            </a>
+                            <a class="pt active" href="#product-3">
+                                <img src="{{p.image2.url}}" alt="">
+                            </a>
+                            <a class="pt" href="#product-4">
+                                <img src="{{p.image3.url}}" alt="">
+                            </a>
+                            <a class="pt" href="#product-5">
+                                <img src="{{p.image4.url}}" alt="">
+                            </a>
+                        </div>
+                        <div class="product__details__slider__content">
+                            <div class="product__details__pic__slider owl-carousel ">
+                                <img data-hash="product-1" class="product__big__img zoom " src="{{p.image.url}}" alt="">
+                                <img data-hash="product-2" class="product__big__img zoom " src="{{p.image1.url}}" alt="">
+                                <img data-hash="product-3" class="product__big__img zoom " src="{{p.image2.url}}" alt="">
+                                <img data-hash="product-4" class="product__big__img zoom " src="{{p.image3.url}}" alt="">
+                                <img data-hash="product-5" class="product__big__img zoom " src="{{p.image4.url}}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="product__details__text">
+                        <h3>{{p.product_name}}<span>Brand: {{p.product_name}}</span></h3>
+                        <!-- <div class="product__details__price">₹ {{p.price}} </div> -->
+                        {%if p.p_offer_price < 1 and p.c_offer_price < 1  %}
+                        <div class="product__details__price">₹ {{p.price}}</div>
+
+                        {%elif p.p_offer_price > 1 and p.c_offer_price is 0 %}
+                        <span class="stext-105 product__details__price" style="color:rgb(52, 151, 52);">
+                            ₹{{p.c_offer_price}} &nbsp;
+                            
+                        </span>
+                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                        
+
+                        {%elif p.p_offer_price < 1 and p.c_offer_price > 1 %}
+                        <span class="stext-105 product__details__price" style="color:rgb(52, 151, 52);">
+                            ₹{{p.c_offer_price}} &nbsp;
+                            
+                        </span>
+                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                        
+                        {%elif p.p_offer_price < p.c_offer_price and p.p_offer_price > 1 %}
+                        <span class="stext-105 product__details__price" style="color:rgb(52, 151, 52);">
+                            ₹{{p.c_offer_price}} &nbsp;
+                            
+                        </span>
+                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                        
+
+                        {%elif p.c_offer_price < p.p_offer_price and p.c_offer_price > 1 %}
+                        <span class="stext-105 product__details__price" style="color:rgb(52, 151, 52);">
+                            ₹{{p.c_offer_price}} &nbsp;
+                            
+                        </span>
+                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                        
+
+                        {%elif p.c_offer_price == p.p_offer_price and p.p_offer_price > 1 and p.c_offer_price > 1 %}
+                        <span class="stext-105 product__details__price" style="color:rgb(52, 151, 52);">
+                            ₹{{p.c_offer_price}} &nbsp;
+                            
+                        </span>
+                        <del style="color:rgb(240, 94, 94);">₹{{p.price}}</del>
+                        
+
+                        {%else%}
+                        {%endif%}
+                        <p></p>
+                        <div class="product__details__button">
+                            <!-- <div class="quantity">
+                                <span>Quantity:</span>
+                                <div class="pro-qty">
+                                    <input type="text" value="1">
+                                </div>
+                            </div> -->
+                            <a href="/add_to_cart/{{p.id}}" class="cart-btn "><span class="icon_bag_alt"></span>Add to cart</a>
+                            <!-- <ul>
+                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
+                            </ul> -->
+                        </div>
+                        <div class="product__details__widget">
+                            <ul>
+                                <li>
+                                    <span>Available size:</span>
+                                    <div class="size__btn">
+                                        <label for="xs-btn" class="active">
+                                            <input type="radio" id="xs-btn">
+                                            {{p.size}}
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span>Promotions:</span>
+                                    <p>Free shipping</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                <h6>Description</h6>
+                                <p>&emsp;&emsp;{{p.description}}</p>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <!-- {% if messages %}
+					<div class="alert alert-danger  " role="alert">
+						{% for message in messages %}
+						<h3 style="font-size: 15px;text-align: center;">{{message}}</h3>
+						{% endfor %}
+					</div>
+					{%endif%} -->
+            </div>
+        </div>
+    </section>
+    {% endfor %}
+{%endblock%}
+
+{%block js%}
+{% if messages %}
+{%for message in messages%}
+<script>
+    
+    swal('{{message}}')
+    
+</script>
+{%endfor%}
+{%endif%}
+
+<script>
+    $(document).ready(function(){
+        $('.zoom').imagezoomsl({
+        zoomrange:[3,3]
+        });
+    })
+</script>
+
+{%endblock%}

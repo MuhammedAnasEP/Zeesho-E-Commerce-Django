@@ -1,0 +1,486 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Zeesho</title>
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap " rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <style>
+        
+
+        .emp-profile {
+            padding: 3%;
+            margin-top: 3%;
+            margin-bottom: 3%;
+            border-radius: 0.5rem;
+            background: rgb(255, 255, 255);
+
+        }
+
+        .profile-img {
+            text-align: center;
+        }
+
+        .profile-img img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+
+        .profile-img .file {
+            position: relative;
+            overflow: hidden;
+            margin-top: -20%;
+            width: 70%;
+            border: none;
+            border-radius: 0;
+            font-size: 15px;
+            background: #212529b8;
+        }
+
+        .profile-img .file input {
+            position: absolute;
+            opacity: 0;
+            right: 0;
+            top: 0;
+        }
+
+        .profile-head h5 {
+            color: #333;
+        }
+
+        .profile-head h6 {
+            color: #0062cc;
+        }
+
+        .profile-edit-btn {
+            border: none;
+            border-radius: 1.5rem;
+            width: 70%;
+            padding: 2%;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+        }
+
+        .proile-rating {
+            font-size: 12px;
+            color: #818182;
+            margin-top: 5%;
+        }
+
+        .proile-rating span {
+            color: #495057;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .profile-head .nav-tabs {
+            margin-bottom: 5%;
+        }
+
+        .profile-head .nav-tabs .nav-link {
+            font-weight: 600;
+            border: none;
+        }
+
+        .profile-head .nav-tabs .nav-link.active {
+            border: none;
+            border-bottom: 2px solid #0062cc;
+        }
+
+        .profile-work {
+            padding: 14%;
+            margin-top: -15%;
+        }
+
+        .profile-work p {
+            font-size: 12px;
+            color: #818182;
+            font-weight: 600;
+            margin-top: 10%;
+        }
+
+        .profile-work a {
+            text-decoration: none;
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .profile-work ul {
+            list-style: none;
+        }
+
+        .profile-tab label {
+            font-weight: 600;
+
+        }
+
+        .profile-tab p {
+            font-weight: 600;
+            color: #0062cc;
+
+
+
+        }
+        .profile {
+            list-style: none;
+            display: inline-block;
+            margin-right: 30px;
+            position: relative;
+        }
+
+        .profile ul li {
+            list-style: none;
+
+
+            position: relative;
+        }
+
+        .profile ul li.active a:after {
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+        }
+
+        .profile ul li:hover a:after {
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+        }
+
+        .profile ul li:hover .dropdowns {
+            top: 27px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .profile ul li:last-child {
+            margin-right: 0;
+        }
+
+        .profile ul li .dropdowns {
+            position: absolute;
+            left: 0;
+            top: 56px;
+            width: 90px;
+            background: #000000ab;
+            text-align: center;
+            padding: 2px 0;
+            z-index: 9;
+            opacity: 0;
+            visibility: hidden;
+            -webkit-transition: all, 0.3s;
+            -o-transition: all, 0.3s;
+            transition: all, 0.3s;
+            border-radius: 10px;
+        }
+
+        .profile ul li .dropdowns li {
+            display: block;
+            margin-right: 0;
+        }
+
+        .profile ul li .dropdowns li a {
+            font-size: 12px;
+            color: #ffffff;
+            font-weight: 500;
+            padding: 8px 10px;
+            text-transform: capitalize;
+        }
+
+        .profile ul li .dropdowns li a:after {
+            display: none;
+        }
+
+        .profile ul li a {
+            font-size: 15px;
+            text-transform: uppercase;
+            color: #111111;
+            font-weight: 500;
+            display: block;
+            padding: 2px 0;
+            position: relative;
+        }
+        .profile ul li a:after {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 80%;
+            height: 2px;
+            background: #ca1515;
+            content: "";
+            -webkit-transition: all, 0.5s;
+            -o-transition: all, 0.5s;
+            transition: all, 0.5s;
+            -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+            transform: scale(0);
+        }
+        .pro{
+            height: 40px;
+            width: 70px;
+            border: 1px solid #ebebeb;
+            border-radius: 20px;
+            padding-left: 30px;
+            padding-top: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .bu{
+            font-size: 14px;
+	        color: #666666;
+	        cursor: pointer;
+	        float: left;
+	        width: 12px;
+	        line-height: 46px;
+        }
+        .button-order{
+            font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+            font-style: normal;
+            font-size: .75rem;
+            font-weight: 700;
+            background-color: hsl(90, 40%, 50%);
+            color: white;
+            width: 30%;
+            margin-left: 35%;
+        }
+        .text-font{
+            font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+            font-weight: 700;
+            letter-spacing: .156rem;
+            font-size: 1.125rem;
+        }
+        .text-price{
+            padding: 0 .625rem;
+            font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+            font-style: normal;
+            font-size: .75rem;
+            font-weight: 700;
+            line-height: .813rem;
+            letter-spacing: 1.6px;
+        }
+        .text-descriptions{
+            font-family: futura-pt,Tahoma,Geneva,Verdana,Arial,sans-serif;
+            font-style: normal;
+            font-size: .75rem;
+            font-weight: 400;
+            line-height: 1.125rem;
+            margin: .313rem 0 .938rem;
+            padding: 0 .625rem;
+        }
+        .button-color{
+            color: #4e4e4e ;
+            border-color: #4e4e4e ;
+        }
+        .sect{
+            width: 50%;
+            margin-left: 25%;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+            background-color: #fafafa;
+        }
+        .img-product {
+            width: 72px;
+            float: left;
+            margin-left: 8px;
+            margin-right: 31px;
+            line-height: 63px;
+        }
+        .display-flex {
+            display: flex;
+        }
+        .align-center {
+            align-items: center;
+        }
+        .round-black-btn {
+            border-radius: 25px;
+            background: #212529;
+            color: #fff;
+            padding: 5px 20px;
+            display: inline-block;
+            border: solid 2px #212529; 
+            transition: all 0.5s ease-in-out 0s;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .round-black-btn:hover,
+        .round-black-btn:focus {
+            background: transparent;
+            color: #212529;
+            text-decoration: none;
+        }
+        .name-product {
+            font-size: 15px;
+            color: #484848;
+            padding-top: 8px;
+            line-height: 24px;
+            width: 50%;
+          }
+
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__close">+</div>
+        <ul class="offcanvas__widget">
+            <!-- <li><span class="icon_search search-switch"></span></li> -->
+            <!-- <li><a href="wishlist"><span class="icon_heart_alt"></span>
+            <li><a href="cart"><span class="icon_bag_alt"></span></a></li> -->
+        </ul>
+        <div class="offcanvas__logo">
+            <a href=" "><img src="{% static 'img/zeesho_logo.png' %}" alt=""></a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__auth header__menu">
+            <ul class="dropdowns">
+                <li><a href="wishlist">Wishlist</a></li>
+                <li><a href="cart">My Cart</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/orders">My Orders</a></li>
+                <li><a href="/members/logout">Logout</a></li>
+                {% else %}
+                <li><a href="/members/login">Login</a></li>
+                <li><a href="/members/signup">Signup</a></li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-2">
+                    <div class="header__logo">
+                        <a href=" "><img src="{% static 'img/zeesho_logo.png' %}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-7">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class=""><a href="/">Home</a></li>
+                            <!-- <li><a href="shop">Shop</a></li> -->
+                            <li><a>Shop</a>
+                                <ul class="dropdown">
+                                    <!-- <li><a href="./product-details.html">Product Details</a></li> -->
+                                    {% for c in cat %}
+                                    <li><a href="/shop/{{c.id}}">{{c.category_name}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            <!-- <li><a href="./contact.html">Contact</a></li> -->
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header__right">
+                        <ul class="header__right__widget">
+                            <li><span class="icon_search search-switch"></span></li>
+                            <li><a href="/wishlist"><span class="icon_heart_alt"></span>
+                            <li><a href="/cart"><span class="icon_bag_alt"></span></a></li>
+                            <nav class="profile">
+                                <ul>
+                                    <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+                                        </svg>
+                                        <ul class="dropdowns">
+                                            {% if user.is_authenticated %}
+                                            <li><a href="/profile">Profile</a></li>
+                                            <li><a href="/orders">My Orders</a></li>
+                                            <li><a href="/members/logout">Logout</a></li>
+                                            {% else %}
+                                            <li><a href="/members/login">Login</a></li>
+                                            <li><a href="/members/signup">Signup</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    {% block content%}
+
+    {%endblock%}
+
+    {% block js%}
+
+    {%endblock%}
+
+    <!-- Js Plugins -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/mixitup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'js/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/zoomsl.min.js' %}"></script>
+
+    <!-- <script src="{% static 'js/zoom-image.js' %}"></script>
+	<script src="{% static 'js/zoom-main.js' %}"></script>  -->
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+</body>
+
+</html>

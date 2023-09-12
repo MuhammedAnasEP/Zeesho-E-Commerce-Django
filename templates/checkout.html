@@ -1,0 +1,299 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__links">
+          <a href="/"><i class="fa fa-home"></i> Home</a>
+          <span>Shopping cart</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+  <div class="container">
+    <form action="place_order" class="checkout__form" method="POST">
+      {% csrf_token %}
+      <div class="checkout__order ">
+        <h5>Order Details</h5>
+        <div class="checkout__order__product mb-4">
+          <div class="d-flex justify-content-between">
+            <ul>
+              <li>
+                <span style="font-size: 16px;">Select Address</span>
+              </li>
+            </ul>
+            <div>
+              <a href="address" class="btn btn-outline-primary btn-sm ms-5 ">Add new address</a>
+            </div>
+          </div>
+          {% for add in address %}
+          <input type="radio" id="addd" class="m-3 " name="address_id" value="{{add.id}}" checked>
+          <label>
+            <div style="width: 71rem;" class="card col-md-4 my-2 col-sm-4">
+              <div class="card-body">
+                <h5 class="card-title ">{{add.name}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{add.address}}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{add.district}}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{add.state}}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Pin Code : {{add.pin_code}}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{add.contact_number}}</h6>
+                <br>
+                <h6 class="card-subtitle mb-2 text-muted">{{add.additional_number}}</h6>
+                <br>
+              </div>
+            </div>
+          </label>
+          {%endfor%}
+        </div>
+        <div class="checkout__order__product ">
+          <ul>
+            <li>
+              <span class="top__text">Coupon</span>
+            </li>
+            <li>
+              <!-- <form action="/cart/checkout" method="post"  > -->
+
+              <div class="d-flex">
+                <input type="text" class="form-control" name="code" id="code"
+                  style="border-radius:20px;width:30%; height:48px;" placeholder="Enter your coupon code">
+                <button type="button" class="site-btn" onclick="Coupon()"
+                  style="width: 10%;margin-left:10px;">Apply</button>
+              </div>
+              <!-- </form> -->
+            </li>
+          </ul>
+
+        </div>
+        <div class="checkout__order__product">
+
+          <ul>
+            <li>
+              <span class="top__text">Product</span>
+              <span class="top__text__right">Total</span>
+            </li>
+            {%for o in orders%}
+            <li>{{o.product.product_name}} <span>₹ {{o.get_final_price}}</span></li>
+            {%endfor%}
+            <li>Dicount Amount <span>&nbsp;-</span><span>₹&nbsp;<span id="discount_amount">0.0</span></span></li>
+          </ul>
+        </div>
+        <div class="checkout__order__total">
+          <ul>
+            <li>Total <span>₹&nbsp;<span id="total_amount"> {{total_amount}}</span></span></li>
+            
+          </ul>
+        </div>
+        <!-- <div class="checkout__order__widget"> -->
+        <!-- <div class="form-check">
+            <input class="form-check-input" type="radio" name="payment" id="flexRadioDefault1"
+              checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+              Cash On Delivery
+            </label>
+          </div> -->
+        <!-- <div class="form-check">
+            <input class="form-check-input" type="radio" name="payment" value="paypal" id="flexRadioDefault2">
+            <label class="form-check-label" for="flexRadioDefault2">
+              PayPal
+            </label>
+          </div>
+        </div> -->
+        <div class="d-flex justify-content-between">
+          <div id="paypal-button-container" style="width: 100px;"></div>
+          <button type="button" id="rzp-button1" class="btn btn-info "
+            style="width: 200px;height:40px;font-weight: 600;text-transform: uppercase;border-radius:50px;">Razorpay</button>
+          <button value="Cash on delivery" name="payment" type="submit" class="site-btn"
+            style="width: 200px;height:40px;">Place Order</button>
+        </div>
+      </div>
+    </form>
+    <!-- <div class="checkout__order__product ">
+      <ul>
+        <li>
+          <span class="top__text">Coupon</span>
+
+        </li>
+        <li>
+          
+            <form action="checkout" method="post">
+              {%csrf_token%}
+              <div class="d-flex">
+              <input type="text" class="form-control" name="coupon_code" style="border-radius:20px;width:30%; height:48px;" placeholder="Enter your coupon code" >
+              <button type="submit" class="site-btn" style="width: 10%;margin-left:10px;">Apply</button></div>
+            </form>
+
+        </li>
+      </ul>
+
+    </div> -->
+
+  </div>
+</section>
+<!-- Checkout Section End -->
+{%endblock%}
+
+{%block js%}
+
+<script
+  src="https://www.paypal.com/sdk/js?client-id=AW2XK9EP0yaddtDkpTJwLC-3_RYMeKR9jFe6Uz7buTX7gDH3y_kbhMvm-_xFEUbu_Ek0qN90JgnNnErV&currency=USD&disable-funding=card"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  paypal.Buttons({
+    //onclick: function(data, actions) {
+    // return actions.resolve();
+    //},
+    style: {
+      color: "gold",
+      shape: "pill",
+      layout: "vertical"
+    },
+    // Sets up the transaction when a payment button is clicked
+    createOrder: (data, actions) => {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '{{total_amount}}' // Can also reference a variable or function
+          }
+        }]
+      });
+    },
+    // Finalize the transaction after payer approval
+    onApprove: (data, actions) => {
+      return actions.order.capture().then(function (orderData) {
+        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+        //var amount = $('#grand_total').val()
+        //var cart = $('#cart').val()
+        var address = $('#addd').val()
+        console.log(address)
+        var payment = "PayPal"
+        var token = $("input[name='csrfmiddlewaretoken']").val()
+        $.ajax({
+          url: "/place_order",
+          type: "POST",
+          data: {
+            'csrfmiddlewaretoken': token,
+            //'amount': amount,
+            //'cart': cart,
+            'address_id': address,
+            'payment': payment,
+          },
+          success: function (response) {
+            console.log(response)
+            swal({
+              title: "Payment Successful",
+              text: "Your payment is successful",
+              icon: "success",
+              button: "OK",
+            }).then(function () {
+              window.location.href = " ";
+            });
+          }
+        })
+      });
+    }
+  }).render('#paypal-button-container');
+</script>
+
+<script>
+  $(document).ready(function () {
+    $('#rzp-button1').click(function (e) {
+      var address = $('#addd').val()
+      //alert("sdfsf")
+      var payment = "Razorpay"
+      var token = $("input[name='csrfmiddlewaretoken']").val()
+      e.preventDefault();
+      console.log("in")
+      $.ajax({
+        type: "GET",
+        url: "/Razorpay",
+        success: function (response) {
+          var options = {
+            "key": "rzp_test_M5aBqpdGb5tfiS", // Enter the Key ID generated from the Dashboard
+            "amount": response.total * 100,//response.total, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "cart",
+            "description": "Thank you for shopping with us",
+            //{% comment %} "image": "https://example.com/your_logo", {% endcomment %}
+            // "order_id": response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+              // alert(response.razorpay_payment_id);
+              data = {
+                "id": response.razorpay_payment_id,
+                "address_id": address,
+                "payment": payment,
+                'csrfmiddlewaretoken': token
+              }
+              $.ajax({
+                type: "POST",
+                url: "/place_order",
+                data: data,
+                success: function (response) {
+                  console.log(response)
+                  swal({
+                    title: "Payment Successful",
+                    text: "Your payment is successful",
+                    icon: "success",
+                    button: "OK",
+                  }).then(function () {
+                    window.location.href = "/";
+                  });
+                }
+              });
+            },
+            "prefill": {
+              "name": "Gaurav Kumar",
+              "email": "",
+              "contact": "9999999999",
+            },
+            "notes": {
+              "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+              "color": "#3399cc"
+            },
+          };
+          var rzp1 = new Razorpay(options);
+          rzp1.open();
+        }
+      });
+    });
+  });
+</script>
+<script>
+  function Coupon() {
+    code = document.getElementById('code').value
+    console.log(code)
+    $.ajax({
+      url: "/coupon_applay/" + code,
+      success: function (response) {
+        console.log(response)
+        document.getElementById('total_amount').innerHTML = response.total_amount
+        document.getElementById('discount_amount').innerHTML = response.discount_amount
+        console.log(response.total_amount, response.discount_amount)
+
+        if (response.message) {
+          swal(response.message, {
+            buttons: false,
+            timer: 2000,
+          })
+        } else {
+          swal(response.errormessage, {
+            buttons: false,
+            timer: 2000,
+          })
+        }
+
+
+      }
+    })
+  }
+</script>
+{%endblock%}
